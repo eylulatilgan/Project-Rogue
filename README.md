@@ -4,3 +4,4 @@ A Rogue-like game (http://en.wikipedia.org/wiki/Roguelike), written in Java. An 
 
 
 
+YA BEN HEP TAQIMI TAŞIOM ABDALLAR FEEDLİYO
