@@ -5,12 +5,10 @@ public class RogueExecutor {
 
 	static Object[][] map;
 	static int boundarySize = 10;
-	int score = 0;
-	int level = 0;
 	int x;
 	int y;
 	boolean isGameOver = false;
-	String consoleTxt = "";
+	static String consoleTxt = "";
 	
 	
 	
@@ -27,21 +25,77 @@ public class RogueExecutor {
 		Scanner sc = new Scanner(System.in);
 
         while (boundarySize < 10 || boundarySize > 20) {
-            System.out.print("MAP SIZE (10-20): ");
+        	consoleTxt += "\nMAP SIZE (10-20): ";
             while(!sc.hasNextInt()) {
-                System.out.print("TRY TO USE NUMBERS IF YOU CAN: ");
+            	consoleTxt += "\nTRY TO USE NUMBERS IF YOU CAN: ";
                 sc.next();
             }
             boundarySize = sc.nextInt();
             if (boundarySize < 10 || boundarySize > 20) {
-                System.out.println("'(10-20)' MEANS; YOU CAN ONLY USE NUMBERS BETWEEN 10 TO 20. SO PLEASE... ");
+            	consoleTxt += "\n'(10-20)' MEANS; YOU CAN ONLY USE NUMBERS BETWEEN 10 TO 20. SO PLEASE... ";
             }
         }
         sc.close();
+        consoleTxt = "START!";
 	}
 
 	private static void generateMap(){
 		map = new Object[boundarySize][boundarySize];
+	}
+	
+	
+	
+}
+
+class Player {
+	
+	int level;
+	int score;
+	int x;
+	int y;
+	
+	public Player(int x, int y){
+		
+		level = 0;
+		score = 0;
+		this.x = x;
+		this.y = y;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public void addScore(int point) {
+		this.score = score + point;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 	
