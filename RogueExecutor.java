@@ -3,11 +3,11 @@ import java.util.Scanner;
 
 public class RogueExecutor {
 
-	static Object[][] map;
+	static Map[][] map;
 	static int boundarySize = 10;
 	int x;
 	int y;
-	boolean isGameOver = false;
+	static boolean isGameOver = false;
 	static String consoleTxt = "";
 	
 	
@@ -16,6 +16,10 @@ public class RogueExecutor {
 		
 		gettingMapSize();
 		generateMap();
+		
+		
+		if(isGameOver)
+			System.exit(0);
 		
 	}
 
@@ -40,10 +44,11 @@ public class RogueExecutor {
 	}
 
 	private static void generateMap(){
-		map = new Object[boundarySize][boundarySize];
+		map = new Map[boundarySize][boundarySize];
 	}
 	
 	
+
 	
 }
 
@@ -101,3 +106,23 @@ class Player {
 	
 	
 }
+
+class Map {
+	
+	boolean explored;
+	boolean isTrap;
+	boolean isEnemy;
+	boolean isSword;
+	boolean isGold;
+
+	public Map[][] getMap(){
+		return RogueExecutor.map;
+	}
+	
+	public boolean isExplored(){
+		return explored;
+	}
+	
+	
+}
+
