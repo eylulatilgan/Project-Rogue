@@ -12,11 +12,12 @@ public class RogueExecutor {
 	static boolean hasInteracted = false;
 	
 	
+	public RogueExecutor(){
+		getMapSize();
+		generateMap();
+	}
 	
 	public static void main(String[] args){
-		
-		gettingMapSize();
-		generateMap();
 		
 		
 		if(isGameOver)
@@ -25,9 +26,13 @@ public class RogueExecutor {
 	}
 
 
+
 	private static void gettingMapSize() {
 		
-		Scanner sc = new Scanner(System.in);
+	JFrame messageFrame = new JFrame();
+		messageFrame.setTitle("Rogue Game");
+		
+		/*Scanner sc = new Scanner(System.in);
 
         while (boundarySize < 10 || boundarySize > 20) {
         	consoleTxt += "\nMAP SIZE (10-20): ";
@@ -41,7 +46,7 @@ public class RogueExecutor {
             }
         }
         sc.close();
-        consoleTxt = "START!";
+        consoleTxt = "START!";*/
 	}
 
 	private static void generateMap(){
