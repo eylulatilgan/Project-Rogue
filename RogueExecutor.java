@@ -1,5 +1,4 @@
-import java.util.Random;
-import java.util.Scanner;
+import javax.swing.JFrame;
 
 public class RogueExecutor {
 
@@ -12,13 +11,10 @@ public class RogueExecutor {
 	static boolean hasInteracted = false;
 	
 	
-	public RogueExecutor(){
-		getMapSize();
-		generateMap();
-	}
-	
 	public static void main(String[] args){
 		
+		gettingMapSize();
+		generateMap();
 		
 		if(isGameOver)
 			System.exit(0);
@@ -86,11 +82,11 @@ class Player {
 	}
 
 	public void setScore(int score) {
-		this.score = score;
+		Player.score = score;
 	}
 	
 	public void addScore(int point) {
-		this.score = score + point;
+		Player.score = score + point;
 	}
 
 	public int getX() {
@@ -156,15 +152,19 @@ class Enemy {
 class Map {
 	
 	boolean explored;
-	boolean isTrap;
-	boolean isEnemy;
-	boolean isSword;
-	boolean isGold;
+	Map isTrap;
+	Map isEnemy;
+	Map isSword;
+	Map isGold;
 	
 	int mapSize = RogueExecutor.boundarySize;
 
 	public Map[][] getMap(){
 		return RogueExecutor.map;
+	}
+	
+	public void setMap(int i, int j, Map isEnemy){
+		RogueExecutor.map[i][j] = isEnemy;
 	}
 	
 	public boolean isExplored(){
@@ -176,7 +176,17 @@ class Map {
 		for (int i = 0; i < mapSize; i++) {
 			for (int j = 0; j < mapSize; j++) {
 				
-				//
+				// 
+				
+				double d = Math.random();
+                if (d <= 0.15)
+                	setMap(i, j, isEnemy);
+                else if (d <= 0.2)
+                	setMap(i, j, isTrap);
+                else if (d <= 0.35)
+                	setMap(i, j, isGold);
+                else if (d <= 0.5)
+                	setMap(i, j, isSword);
 				
 				
 			
