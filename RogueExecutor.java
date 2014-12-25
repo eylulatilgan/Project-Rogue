@@ -108,6 +108,45 @@ class Player implements MapObjects {
 	public MapObjects setLocations(int x, int y) {
 		return new Player(x,y);
 	}
+}
+
+class Enemy implements MapObjects{
+
+	static int level;
+	int x;
+	int y;
+
+	public Enemy(int x, int y){
+
+		this.x = x;
+		this.y = y;
+	}
+
+	public static int getLevel() {
+		return level;
+	}
+
+	public static void setLevel(int level) {
+		Enemy.level = level;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public MapObjects setLocation(int x, int y){ return new Enemy(x,y);}
 
 
 }
