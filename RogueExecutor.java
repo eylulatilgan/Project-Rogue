@@ -217,6 +217,39 @@ class Gold implements MapObjects {
 	public MapObjects setLocation(int x, int y){ return new Gold(x,y); }
 }
 
+class Trap implements MapObjects {
+	int locX;
+	int locY;
+
+	public Trap(int x, int y){
+		this.locX = x;
+		this.locY = y;
+	}
+
+	@Override
+	public void setX(int x) {
+		this.locX = x;
+	}
+
+	@Override
+	public void setY(int y) {
+		this.locY = y;
+	}
+
+	@Override
+	public int getX() {
+		return locX;
+	}
+
+	@Override
+	public int getY() {
+		return locY;
+	}
+
+	public MapObjects setLocation(int x, int y){ return new Trap(x,y); }
+
+}
+
 //class Player {
 //
 //	static int level;
