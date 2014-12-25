@@ -54,15 +54,15 @@ public class RogueExecutor {
 	
 }
 
-class Player {
-	
+class Player implements MapObjects {
+
 	static int level;
 	static int score;
 	int x;
 	int y;
-	
+
 	public Player(int x, int y){
-		
+
 		level = 0;
 		score = 0;
 		this.x = x;
@@ -84,7 +84,7 @@ class Player {
 	public void setScore(int score) {
 		Player.score = score;
 	}
-	
+
 	public void addScore(int point) {
 		Player.score = score + point;
 	}
@@ -104,56 +104,115 @@ class Player {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	
-	
+
+	public MapObjects setLocations(int x, int y) {
+		return new Player(x,y);
+	}
+
+
 }
 
-class Enemy {
-	
-	static int level;
-	int x;
-	int y;
-	
-	public Enemy(int x, int y){
-		
-		this.x = x;
-		this.y = y;
-	}
-
-	public static int getLevel() {
-		return level;
-	}
-
-	public static void setLevel(int level) {
-		Enemy.level = level;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	
-	
-}
+//class Player {
+//
+//	static int level;
+//	static int score;
+//	int x;
+//	int y;
+//
+//	public Player(int x, int y){
+//
+//		level = 0;
+//		score = 0;
+//		this.x = x;
+//		this.y = y;
+//	}
+//
+//	public int getLevel() {
+//		return level;
+//	}
+//
+//	public void setLevel(int level) {
+//		Player.level = level;
+//	}
+//
+//	public int getScore() {
+//		return score;
+//	}
+//
+//	public void setScore(int score) {
+//		Player.score = score;
+//	}
+//
+//	public void addScore(int point) {
+//		Player.score = score + point;
+//	}
+//
+//	public int getX() {
+//		return x;
+//	}
+//
+//	public void setX(int x) {
+//		this.x = x;
+//	}
+//
+//	public int getY() {
+//		return y;
+//	}
+//
+//	public void setY(int y) {
+//		this.y = y;
+//	}
+//
+//
+//
+//}
+//
+//class Enemy {
+//
+//	static int level;
+//	int x;
+//	int y;
+//
+//	public Enemy(int x, int y){
+//
+//		this.x = x;
+//		this.y = y;
+//	}
+//
+//	public static int getLevel() {
+//		return level;
+//	}
+//
+//	public static void setLevel(int level) {
+//		Enemy.level = level;
+//	}
+//
+//	public int getX() {
+//		return x;
+//	}
+//
+//	public void setX(int x) {
+//		this.x = x;
+//	}
+//
+//	public int getY() {
+//		return y;
+//	}
+//
+//	public void setY(int y) {
+//		this.y = y;
+//	}
+//
+//	public static void setLocation(int x, int y){ new Enemy(x,y);}
+//
+//
+//}
 
 class Map {
 	
 	boolean explored;
 	Map isTrap;
-	Map isEnemy;
+	Enemy enemy;
 	Map isSword;
 	Map isGold;
 	
@@ -163,8 +222,9 @@ class Map {
 		return RogueExecutor.map;
 	}
 	
-	public void setMap(int i, int j, Map isEnemy){
-		RogueExecutor.map[i][j] = isEnemy;
+	public void setMap(int i, int j){
+		enemy = new Enemy(i,j);
+		RogueExecutor.map[i][j] = enemy.setLocation(i,j);
 	}
 	
 	public boolean isExplored(){
@@ -180,7 +240,7 @@ class Map {
 				
 				double d = Math.random();
                 if (d <= 0.15)
-                	setMap(i, j, isEnemy);
+                	setMap(i, j, enemy);
                 else if (d <= 0.2)
                 	setMap(i, j, isTrap);
                 else if (d <= 0.35)
