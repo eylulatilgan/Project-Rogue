@@ -185,6 +185,38 @@ class Sword implements MapObjects {
 	public MapObjects setLocation(int x, int y){ return new Sword(x,y); }
 }
 
+class Gold implements MapObjects {
+	int locX;
+	int locY;
+
+	public Gold(int locX, int locY){
+		this.locX = locX;
+		this.locY = locY;
+	}
+
+	@Override
+	public void setX(int x) {
+		this.locX = x;
+	}
+
+	@Override
+	public void setY(int y) {
+		this.locY = y;
+	}
+
+	@Override
+	public int getX() {
+		return locX;
+	}
+
+	@Override
+	public int getY() {
+		return locY;
+	}
+
+	public MapObjects setLocation(int x, int y){ return new Gold(x,y); }
+}
+
 //class Player {
 //
 //	static int level;
