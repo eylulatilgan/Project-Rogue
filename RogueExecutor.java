@@ -2,7 +2,8 @@ import javax.swing.JFrame;
 
 public class RogueExecutor {
 
-	static Map[][] map;
+//	static Map[][] map;
+	static MapObjects[][] map;
 	static int boundarySize = 10;
 	int x;
 	int y;
@@ -349,20 +350,45 @@ class Trap implements MapObjects {
 class Map {
 	
 	boolean explored;
-	Map isTrap;
+//	Map isTrap;
+//	Enemy enemy;
+//	Map isSword;
+//	Map isGold;
+	Trap trap;
 	Enemy enemy;
-	Map isSword;
-	Map isGold;
+	Sword sword;
+	Gold gold;
 	
 	int mapSize = RogueExecutor.boundarySize;
 
-	public Map[][] getMap(){
+//	public Map[][] getMap(){
+//		return RogueExecutor.map;
+//	}
+
+	public MapObjects[][] getMap(){
 		return RogueExecutor.map;
 	}
 	
-	public void setMap(int i, int j){
+//	public void setMap(int i, int j){
+//		enemy = new Enemy(i,j);
+//		RogueExecutor.map[i][j] = enemy.setLocation(i,j);
+//	}
+
+	public void setMap(int i, int j, Object obj){
 		enemy = new Enemy(i,j);
-		RogueExecutor.map[i][j] = enemy.setLocation(i,j);
+		if(obj == enemy) {
+			RogueExecutor.map[i][j] = enemy.setLocation(i, j);
+			System.out.println("enemy");
+		}else if(obj == sword){
+			RogueExecutor.map[i][j] = sword.setLocation(i,j);
+			System.out.println("sword");
+		}else if(obj == gold){
+			RogueExecutor.map[i][j] = gold.setLocation(i,j);
+			System.out.println("gold");
+		}else {
+			RogueExecutor.map[i][j] = trap.setLocation(i,j);
+			System.out.println("trap");
+		}
 	}
 	
 	public boolean isExplored(){
@@ -376,15 +402,25 @@ class Map {
 				
 				// 
 				
+//				double d = Math.random();
+//                if (d <= 0.15)
+//                	setMap(i, j, enemy);
+//                else if (d <= 0.2)
+//                	setMap(i, j, isTrap);
+//                else if (d <= 0.35)
+//                	setMap(i, j, isGold);
+//                else if (d <= 0.5)
+//                	setMap(i, j, isSword);
+
 				double d = Math.random();
-                if (d <= 0.15)
-                	setMap(i, j, enemy);
-                else if (d <= 0.2)
-                	setMap(i, j, isTrap);
-                else if (d <= 0.35)
-                	setMap(i, j, isGold);
-                else if (d <= 0.5)
-                	setMap(i, j, isSword);
+				if (d <= 0.15)
+					setMap(i, j, enemy);
+				else if (d <= 0.2)
+					setMap(i, j, trap);
+				else if (d <= 0.35)
+					setMap(i, j, gold);
+				else if (d <= 0.5)
+					setMap(i, j, sword);
 				
 				
 			
