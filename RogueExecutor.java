@@ -47,7 +47,8 @@ public class RogueExecutor {
 	}
 
 	private static void generateMap(){
-		map = new Map[boundarySize][boundarySize];
+//		map = new Map[boundarySize][boundarySize];
+		map = new MapObjects[boundarySize][boundarySize];
 	}
 	
 	
