@@ -1,9 +1,9 @@
-import javax.swing.JFrame;
+import java.util.Random;
+import java.util.Scanner;
 
 public class RogueExecutor {
 
-//	static Map[][] map;
-	static MapObjects[][] map;
+	static Map map;
 	static int boundarySize = 10;
 	int x;
 	int y;
@@ -12,25 +12,15 @@ public class RogueExecutor {
 	static boolean hasInteracted = false;
 	
 	
-	public static void main(String[] args){
-		
-		gettingMapSize();
-		generateMap();
-		
+	public static void execute(){
+		getMapSize();
+		callMapGenerator();
 		if(isGameOver)
 			System.exit(0);
-		
 	}
 
-
-
-	private static void gettingMapSize() {
-		
-	JFrame messageFrame = new JFrame();
-		messageFrame.setTitle("Rogue Game");
-		
-		/*Scanner sc = new Scanner(System.in);
-
+	private static void getMapSize() {
+		Scanner sc = new Scanner(System.in);
         while (boundarySize < 10 || boundarySize > 20) {
         	consoleTxt += "\nMAP SIZE (10-20): ";
             while(!sc.hasNextInt()) {
@@ -43,28 +33,24 @@ public class RogueExecutor {
             }
         }
         sc.close();
-        consoleTxt = "START!";*/
-	}
-
-	private static void generateMap(){
-//		map = new Map[boundarySize][boundarySize];
-		map = new MapObjects[boundarySize][boundarySize];
+        consoleTxt = "START!";
 	}
 	
-	
+	public static void callMapGenerator(){
+		map = new Map();
+		map.generateMap();
+	}
 
-	
 }
 
-class Player implements MapObjects {
-
+class Player {
+	
 	static int level;
 	static int score;
-	int x;
-	int y;
-
+	static int x;
+	static int y;
+	
 	public Player(int x, int y){
-
 		level = 0;
 		score = 0;
 		this.x = x;
@@ -84,11 +70,11 @@ class Player implements MapObjects {
 	}
 
 	public void setScore(int score) {
-		Player.score = score;
+		this.score = score;
 	}
-
+	
 	public void addScore(int point) {
-		Player.score = score + point;
+		this.score = score + point;
 	}
 
 	public int getX() {
@@ -106,20 +92,16 @@ class Player implements MapObjects {
 	public void setY(int y) {
 		this.y = y;
 	}
-
-	public MapObjects setLocations(int x, int y) {
-		return new Player(x,y);
-	}
+	
 }
 
-class Enemy implements MapObjects{
-
+class Enemy {
+	
 	static int level;
 	int x;
 	int y;
-
+	
 	public Enemy(int x, int y){
-
 		this.x = x;
 		this.y = y;
 	}
@@ -146,339 +128,135 @@ class Enemy implements MapObjects{
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public MapObjects setLocation(int x, int y){ return new Enemy(x,y);}
-
-
+	}	
+	
 }
 
-class Sword implements MapObjects {
-	int locX;
-	int locY;
-
-	public Sword(int locX, int locY){
-		this.locX = locX;
-		this.locY = locY;
-
+class Room {
+	
+	boolean isExplored;
+	String roomContent = ""; //T -> trap, E -> enemy, S -> sword, G -> gold, 0 -> empty
+	
+	public boolean getIsExplored(){
+		return isExplored;
 	}
-
-
-	@Override
-	public void setX(int x) {
-		this.locX = x;
-	}
-
-	@Override
-	public void setY(int y) {
-		this.locY = y;
-	}
-
-	@Override
-	public int getX() {
-		return locX;
-	}
-
-	@Override
-	public int getY() {
-		return locY;
-	}
-
-	public MapObjects setLocation(int x, int y){ return new Sword(x,y); }
+	
 }
-
-class Gold implements MapObjects {
-	int locX;
-	int locY;
-
-	public Gold(int locX, int locY){
-		this.locX = locX;
-		this.locY = locY;
-	}
-
-	@Override
-	public void setX(int x) {
-		this.locX = x;
-	}
-
-	@Override
-	public void setY(int y) {
-		this.locY = y;
-	}
-
-	@Override
-	public int getX() {
-		return locX;
-	}
-
-	@Override
-	public int getY() {
-		return locY;
-	}
-
-	public MapObjects setLocation(int x, int y){ return new Gold(x,y); }
-}
-
-class Trap implements MapObjects {
-	int locX;
-	int locY;
-
-	public Trap(int x, int y){
-		this.locX = x;
-		this.locY = y;
-	}
-
-	@Override
-	public void setX(int x) {
-		this.locX = x;
-	}
-
-	@Override
-	public void setY(int y) {
-		this.locY = y;
-	}
-
-	@Override
-	public int getX() {
-		return locX;
-	}
-
-	@Override
-	public int getY() {
-		return locY;
-	}
-
-	public MapObjects setLocation(int x, int y){ return new Trap(x,y); }
-
-}
-
-//class Player {
-//
-//	static int level;
-//	static int score;
-//	int x;
-//	int y;
-//
-//	public Player(int x, int y){
-//
-//		level = 0;
-//		score = 0;
-//		this.x = x;
-//		this.y = y;
-//	}
-//
-//	public int getLevel() {
-//		return level;
-//	}
-//
-//	public void setLevel(int level) {
-//		Player.level = level;
-//	}
-//
-//	public int getScore() {
-//		return score;
-//	}
-//
-//	public void setScore(int score) {
-//		Player.score = score;
-//	}
-//
-//	public void addScore(int point) {
-//		Player.score = score + point;
-//	}
-//
-//	public int getX() {
-//		return x;
-//	}
-//
-//	public void setX(int x) {
-//		this.x = x;
-//	}
-//
-//	public int getY() {
-//		return y;
-//	}
-//
-//	public void setY(int y) {
-//		this.y = y;
-//	}
-//
-//
-//
-//}
-//
-//class Enemy {
-//
-//	static int level;
-//	int x;
-//	int y;
-//
-//	public Enemy(int x, int y){
-//
-//		this.x = x;
-//		this.y = y;
-//	}
-//
-//	public static int getLevel() {
-//		return level;
-//	}
-//
-//	public static void setLevel(int level) {
-//		Enemy.level = level;
-//	}
-//
-//	public int getX() {
-//		return x;
-//	}
-//
-//	public void setX(int x) {
-//		this.x = x;
-//	}
-//
-//	public int getY() {
-//		return y;
-//	}
-//
-//	public void setY(int y) {
-//		this.y = y;
-//	}
-//
-//	public static void setLocation(int x, int y){ new Enemy(x,y);}
-//
-//
-//}
 
 class Map {
 	
-	boolean explored;
-//	Map isTrap;
-//	Enemy enemy;
-//	Map isSword;
-//	Map isGold;
-	Trap trap;
-	Enemy enemy;
-	Sword sword;
-	Gold gold;
+	int mapSize;
+	Room[][] mapArray;
 	
-	int mapSize = RogueExecutor.boundarySize;
-
-//	public Map[][] getMap(){
-//		return RogueExecutor.map;
-//	}
-
-	public MapObjects[][] getMap(){
-		return RogueExecutor.map;
+	public Map(){
+		mapSize = RogueExecutor.boundarySize;
+		mapArray = new Room[mapSize][mapSize];
 	}
 	
-//	public void setMap(int i, int j){
-//		enemy = new Enemy(i,j);
-//		RogueExecutor.map[i][j] = enemy.setLocation(i,j);
-//	}
-
-	public void setMap(int i, int j, Object obj){
-		enemy = new Enemy(i,j);
-		if(obj == enemy) {
-			RogueExecutor.map[i][j] = enemy.setLocation(i, j);
-			System.out.println("enemy");
-		}else if(obj == sword){
-			RogueExecutor.map[i][j] = sword.setLocation(i,j);
-			System.out.println("sword");
-		}else if(obj == gold){
-			RogueExecutor.map[i][j] = gold.setLocation(i,j);
-			System.out.println("gold");
-		}else {
-			RogueExecutor.map[i][j] = trap.setLocation(i,j);
-			System.out.println("trap");
-		}
+	public void generateMap(){
+		initRooms();
+		placeTraps();
+		placeEnemies();
+		placeGold();
+		placeSword();
 	}
 	
-	public boolean isExplored(){
-		return explored;
-	}
-	
-	public void placer(){
-		
-		for (int i = 0; i < mapSize; i++) {
-			for (int j = 0; j < mapSize; j++) {
-				
-				// 
-				
-//				double d = Math.random();
-//                if (d <= 0.15)
-//                	setMap(i, j, enemy);
-//                else if (d <= 0.2)
-//                	setMap(i, j, isTrap);
-//                else if (d <= 0.35)
-//                	setMap(i, j, isGold);
-//                else if (d <= 0.5)
-//                	setMap(i, j, isSword);
-
-				double d = Math.random();
-				if (d <= 0.15)
-					setMap(i, j, enemy);
-				else if (d <= 0.2)
-					setMap(i, j, trap);
-				else if (d <= 0.35)
-					setMap(i, j, gold);
-				else if (d <= 0.5)
-					setMap(i, j, sword);
-				
-				
-			
+	public void initRooms(){
+		for (int i = 0; i<mapSize; i++){
+			for(int j = 0; j<mapSize; j++){
+				mapArray[i][j].isExplored = false;
+				mapArray[i][j].roomContent = "0";
 			}
-			
 		}
+	}
 		
+	public void placeTraps(){ //assumes that the dungeon has "mapSize" amount of traps.
+		Random random = new Random();
+		int trapCount = 0;
+		while(trapCount < mapSize){
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
+				mapArray[x][y].roomContent = "E";
+			} else {
+				continue;
+			}
+			trapCount++;
+		}
+	}
+	
+	public void placeEnemies(){ //assumes that the dungeon has "mapSize" amount of enemies.
+		Random random = new Random();
+		int enemiesCount = 0;
+		while(enemiesCount < mapSize){
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
+				mapArray[x][y].roomContent = "E";
+			} else {
+				continue;
+			}
+			enemiesCount++;
+		}
+	}
+	
+	public void placeGold(){ //assumes that the dungeon has "mapSize" amount of traps.
+		Random random = new Random();
+		int goldCount = 0;
+		while(goldCount < mapSize){
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
+				mapArray[x][y].roomContent = "G";
+			} else {
+				continue;
+			}
+			goldCount++;
+		}
+	}
+	
+	public void placeSword(){ //places only one sword.
+		Random random = new Random();
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
+				mapArray[x][y].roomContent = "S";
+			}
 	}
 	
 	public void checkRoom(){
-		
-		if(isTrap){
-			
+		int x = Player.x;
+		int y = Player.y;
+		if(mapArray[x][y].roomContent.equals("T")){
 			RogueExecutor.consoleTxt += "\nYOU ACTIVATED A TRAP AND DIED!\nGAME OVER!";
 			RogueExecutor.isGameOver = true;
 		}
-		
-		if(isEnemy){
-			
+		if(mapArray[x][y].roomContent.equals("E")){	
 			RogueExecutor.consoleTxt += "\nYOU HAVE ENCOUNTERED AN ENEMY! GET READY FOR BATTLE!";
 			if(RogueExecutor.hasInteracted){
-				
 				if(Player.level >= Enemy.level){
-					
 					RogueExecutor.consoleTxt += "\nYOU WON .........";
 					Player.score += 10 * Enemy.level;
-					
-				}else{
-					
+				} else {
 					RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
 					RogueExecutor.isGameOver = true;
-					
 				}
 			}
-			
 		}
-		
-		if(isSword){
-			
-			if(Player.level < 4){
-				
+		if(mapArray[x][y].roomContent.equals("S")){	
+			if(Player.level<4){
 				RogueExecutor.consoleTxt += "\nYOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
 				Player.level++;
-			}
-			else{
+			} else {
 				RogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
 				Player.score += 10;
 			}
-			
 		}
-		
-		if(isGold){
-			
+		if(mapArray[x][y].roomContent.equals("G")){	
 			RogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
 			Player.score += 10;
 		}
 	}
 	
-	
 }
+
