@@ -1,12 +1,16 @@
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class DummyRogueExecutor {
@@ -15,7 +19,7 @@ public class DummyRogueExecutor {
 	static int boundarySize = 10;
 	int x;
 	int y;
-	static boolean isGameOver = false;
+	boolean isGameOver;
 	static String consoleTxt = "";
 	static boolean hasInteracted = false;
 	/*private JFrame dialogFrame;
@@ -31,12 +35,18 @@ public class DummyRogueExecutor {
 	}*/
 	
 	public DummyRogueExecutor(){
+		isGameOver = false;
 		getMapSize();
 	}
 	
 	public static void main(String args[])
 	    {
-	        new DummyRogueExecutor();
+		EventQueue.invokeLater(new Runnable() {
+	        @Override
+	        public void run() {
+	            new DummyRogueExecutor();
+	        }
+	    });
 	    }
 
 	private void getMapSize() {
@@ -77,7 +87,6 @@ public class DummyRogueExecutor {
 	
 	public void callMapGenerator(){
 		map = new Map(dummyBoundarySize);
-		System.out.println(map.getMapBoundary());
 		initUI(map);
 	}
 
@@ -86,14 +95,20 @@ public class DummyRogueExecutor {
 		 gameFrame = new JFrame();
 		 gameFrame.setTitle("Game");
 		 gameFrame.setSize(map.getMapBoundary() * 100, map.getMapBoundary() * 100);
+		
+		 for(int i = 0; i < map.getMapBoundary(); i += 10){
+			 for(int j = 0; j < map.getMapBoundary(); j += 10){
+				 JPanel cell = new JPanel();
+				 cell.setBounds(i, j, 10, 10);
+				 
+				 gameFrame.add(cell);
+				 
+				 
+			 }
+		 }
+		 
 		 gameFrame.setLocationRelativeTo(null);
 		 gameFrame.setVisible(true);
-		 
-//		 for(int i = 0; i < map.getMapBoundary(); i++){
-//			 for(int j = 0; j < map.getMapBoundary(); j++){
-//				 
-//			 }
-//		 }	
 	}
 }
 
@@ -160,6 +175,18 @@ class Map {
 		return mapSize;
 	}
 	
+	public ImageIcon getImage(Room room){
+		ImageIcon image;
+		if(room.getIsExplored()){
+			image = new ImageIcon("ico-x.png");
+			image.getImage();
+		} else{
+			image = new ImageIcon("question.jpg");
+			image.getImage();
+		}
+		
+		return image;
+	}
 	public void placeTraps(){ //assumes that the dungeon has "mapSize" amount of traps.
 		Random random = new Random();
 		int trapCount = 0;
@@ -219,7 +246,7 @@ class Map {
 		int y = Player.y;
 		if(mapArray[x][y].getRoomContent().equals("T")){
 			DummyRogueExecutor.consoleTxt += "\nYOU ACTIVATED A TRAP AND DIED!\nGAME OVER!";
-			DummyRogueExecutor.isGameOver = true;
+			//DummyRogueExecutor.isGameOver = true;
 		}
 		if(mapArray[x][y].getRoomContent().equals("E")){	
 			DummyRogueExecutor.consoleTxt += "\nYOU HAVE ENCOUNTERED AN ENEMY! GET READY FOR BATTLE!";
@@ -229,7 +256,7 @@ class Map {
 					Player.score += 10 * Enemy.level;
 				} else {
 					DummyRogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
-					DummyRogueExecutor.isGameOver = true;
+					//DummyRogueExecutor.isGameOver = true;
 				}
 			}
 		}
