@@ -22,7 +22,7 @@ public class DummyRogueExecutor {
 	private JDialog dialog;*/
 	//private JTextField boundarySizeInput;
 	private int dummyBoundarySize;
-
+	private JFrame gameFrame;
 	
 	/*public static void execute(){
 		callMapGenerator();
@@ -62,6 +62,7 @@ public class DummyRogueExecutor {
 				if(size <= 20 && 10 <= size){
 					dummyBoundarySize = size;
 					callMapGenerator();
+					dialog.dispose();
 				}
 				else
 					dialog.add(new JLabel(" (10-20) MEANS; YOU CAN ONLY USE NUMBERS BETWEEN 10 TO 20. SO PLEASE... "));
@@ -82,11 +83,17 @@ public class DummyRogueExecutor {
 
 	
 	 private void initUI(Map map) {
-		 for(int i = 0; i < map.getMapBoundary(); i++){
-			 for(int j = 0; j < map.getMapBoundary(); j++){
-				 System.out.println(map.getMapArray()[i][j].getRoomContent());
-			 }
-		 }	
+		 gameFrame = new JFrame();
+		 gameFrame.setTitle("Game");
+		 gameFrame.setSize(map.getMapBoundary() * 100, map.getMapBoundary() * 100);
+		 gameFrame.setLocationRelativeTo(null);
+		 gameFrame.setVisible(true);
+		 
+//		 for(int i = 0; i < map.getMapBoundary(); i++){
+//			 for(int j = 0; j < map.getMapBoundary(); j++){
+//				 
+//			 }
+//		 }	
 	}
 }
 
