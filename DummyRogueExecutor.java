@@ -128,10 +128,10 @@ class Map {
 	public void generateMap(){
 		//System.out.println("hello I'm here!! ");
 		initRooms();
-		//placeTraps();
-		//placeEnemies();
-		//placeGold();
-		//placeSword();
+		placeTraps();
+		placeEnemies();
+		placeGold();
+		placeSword();
 	}
 	
 	public void initRooms(){
@@ -153,93 +153,93 @@ class Map {
 		return mapSize;
 	}
 	
-//	public void placeTraps(){ //assumes that the dungeon has "mapSize" amount of traps.
-//		Random random = new Random();
-//		int trapCount = 0;
-//		while(trapCount < mapSize){
-//			int x = random.nextInt(mapSize);
-//			int y = random.nextInt(mapSize);
-//			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
-//				mapArray[x][y].roomContent = "E";
-//			} else {
-//				continue;
-//			}
-//			trapCount++;
-//		}
-//	}
-//	
-//	public void placeEnemies(){ //assumes that the dungeon has "mapSize" amount of enemies.
-//		Random random = new Random();
-//		int enemiesCount = 0;
-//		while(enemiesCount < mapSize){
-//			int x = random.nextInt(mapSize);
-//			int y = random.nextInt(mapSize);
-//			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
-//				mapArray[x][y].roomContent = "E";
-//			} else {
-//				continue;
-//			}
-//			enemiesCount++;
-//		}
-//	}
-//	
-//	public void placeGold(){ //assumes that the dungeon has "mapSize" amount of traps.
-//		Random random = new Random();
-//		int goldCount = 0;
-//		while(goldCount < mapSize){
-//			int x = random.nextInt(mapSize);
-//			int y = random.nextInt(mapSize);
-//			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
-//				mapArray[x][y].roomContent = "G";
-//			} else {
-//				continue;
-//			}
-//			goldCount++;
-//		}
-//	}
-//	
-//	public void placeSword(){ //places only one sword.
-//		Random random = new Random();
-//			int x = random.nextInt(mapSize);
-//			int y = random.nextInt(mapSize);
-//			if(mapArray[x][y].roomContent.equals("0")){ //if there is nothing in the room
-//				mapArray[x][y].roomContent = "S";
-//			}
-//	}
-//	
-//	public void checkRoom(){
-//		int x = Player.x;
-//		int y = Player.y;
-//		if(mapArray[x][y].roomContent.equals("T")){
-//			DummyRogueExecutor.consoleTxt += "\nYOU ACTIVATED A TRAP AND DIED!\nGAME OVER!";
-//			DummyRogueExecutor.isGameOver = true;
-//		}
-//		if(mapArray[x][y].roomContent.equals("E")){	
-//			DummyRogueExecutor.consoleTxt += "\nYOU HAVE ENCOUNTERED AN ENEMY! GET READY FOR BATTLE!";
-//			if(DummyRogueExecutor.hasInteracted){
-//				if(Player.level >= Enemy.level){
-//					DummyRogueExecutor.consoleTxt += "\nYOU WON .........";
-//					Player.score += 10 * Enemy.level;
-//				} else {
-//					DummyRogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
-//					DummyRogueExecutor.isGameOver = true;
-//				}
-//			}
-//		}
-//		if(mapArray[x][y].roomContent.equals("S")){	
-//			if(Player.level<4){
-//				DummyRogueExecutor.consoleTxt += "\nYOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
-//				Player.level++;
-//			} else {
-//				DummyRogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
-//				Player.score += 10;
-//			}
-//		}
-//		if(mapArray[x][y].roomContent.equals("G")){	
-//			DummyRogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
-//			Player.score += 10;
-//		}
-//	}
+	public void placeTraps(){ //assumes that the dungeon has "mapSize" amount of traps.
+		Random random = new Random();
+		int trapCount = 0;
+		while(trapCount < mapSize){
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
+				mapArray[x][y].setRoomContent("T");
+			} else {
+				continue;
+			}
+			trapCount++;
+		}
+	}
+	
+	public void placeEnemies(){ //assumes that the dungeon has "mapSize" amount of enemies.
+		Random random = new Random();
+		int enemiesCount = 0;
+		while(enemiesCount < mapSize){
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
+				mapArray[x][y].setRoomContent("E");
+			} else {
+				continue;
+			}
+			enemiesCount++;
+		}
+	}
+	
+	public void placeGold(){ //assumes that the dungeon has "mapSize" amount of traps.
+		Random random = new Random();
+		int goldCount = 0;
+		while(goldCount < mapSize){
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
+				mapArray[x][y].setRoomContent("G");
+			} else {
+				continue;
+			}
+			goldCount++;
+		}
+	}
+	
+	public void placeSword(){ //places only one sword.
+		Random random = new Random();
+			int x = random.nextInt(mapSize);
+			int y = random.nextInt(mapSize);
+			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
+				mapArray[x][y].setRoomContent("S");
+			}
+	}
+	
+	public void checkRoom(){
+		int x = Player.x;
+		int y = Player.y;
+		if(mapArray[x][y].getRoomContent().equals("T")){
+			DummyRogueExecutor.consoleTxt += "\nYOU ACTIVATED A TRAP AND DIED!\nGAME OVER!";
+			DummyRogueExecutor.isGameOver = true;
+		}
+		if(mapArray[x][y].getRoomContent().equals("E")){	
+			DummyRogueExecutor.consoleTxt += "\nYOU HAVE ENCOUNTERED AN ENEMY! GET READY FOR BATTLE!";
+			if(DummyRogueExecutor.hasInteracted){
+				if(Player.level >= Enemy.level){
+					DummyRogueExecutor.consoleTxt += "\nYOU WON .........";
+					Player.score += 10 * Enemy.level;
+				} else {
+					DummyRogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
+					DummyRogueExecutor.isGameOver = true;
+				}
+			}
+		}
+		if(mapArray[x][y].getRoomContent().equals("S")){	
+			if(Player.level<4){
+				DummyRogueExecutor.consoleTxt += "\nYOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
+				Player.level++;
+			} else {
+				DummyRogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
+				Player.score += 10;
+			}
+		}
+		if(mapArray[x][y].getRoomContent().equals("G")){	
+			DummyRogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
+			Player.score += 10;
+		}
+	}
 	
 }
 
