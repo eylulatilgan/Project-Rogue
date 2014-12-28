@@ -10,8 +10,8 @@ public class RogueExecutor {
 	static boolean isGameOver = false;
 	static String consoleTxt = "";
 	static boolean hasInteracted = false;
-	
-	
+
+
 	public static void execute(){
 		getMapSize();
 		callMapGenerator();
@@ -35,7 +35,7 @@ public class RogueExecutor {
         sc.close();
         consoleTxt = "START!";
 	}
-	
+
 	public static void callMapGenerator(){
 		map = new Map();
 		map.generateMap();
@@ -44,12 +44,12 @@ public class RogueExecutor {
 }
 
 class Player {
-	
+
 	static int level;
 	static int score;
 	static int x;
 	static int y;
-	
+
 	public Player(int x, int y){
 		level = 0;
 		score = 0;
@@ -72,7 +72,7 @@ class Player {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public void addScore(int point) {
 		this.score = score + point;
 	}
@@ -92,15 +92,15 @@ class Player {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 }
 
 class Enemy {
-	
+
 	static int level;
 	int x;
 	int y;
-	
+
 	public Enemy(int x, int y){
 		this.x = x;
 		this.y = y;
@@ -128,31 +128,31 @@ class Enemy {
 
 	public void setY(int y) {
 		this.y = y;
-	}	
-	
+	}
+
 }
 
 class Room {
-	
+
 	boolean isExplored;
 	String roomContent = ""; //T -> trap, E -> enemy, S -> sword, G -> gold, 0 -> empty
-	
+
 	public boolean getIsExplored(){
 		return isExplored;
 	}
-	
+
 }
 
 class Map {
-	
+
 	int mapSize;
 	Room[][] mapArray;
-	
+
 	public Map(){
 		mapSize = RogueExecutor.boundarySize;
 		mapArray = new Room[mapSize][mapSize];
 	}
-	
+
 	public void generateMap(){
 		initRooms();
 		placeTraps();
@@ -160,7 +160,7 @@ class Map {
 		placeGold();
 		placeSword();
 	}
-	
+
 	public void initRooms(){
 		for (int i = 0; i<mapSize; i++){
 			for(int j = 0; j<mapSize; j++){
@@ -169,7 +169,7 @@ class Map {
 			}
 		}
 	}
-		
+
 	public void placeTraps(){ //assumes that the dungeon has "mapSize" amount of traps.
 		Random random = new Random();
 		int trapCount = 0;
@@ -184,7 +184,7 @@ class Map {
 			trapCount++;
 		}
 	}
-	
+
 	public void placeEnemies(){ //assumes that the dungeon has "mapSize" amount of enemies.
 		Random random = new Random();
 		int enemiesCount = 0;
@@ -199,7 +199,7 @@ class Map {
 			enemiesCount++;
 		}
 	}
-	
+
 	public void placeGold(){ //assumes that the dungeon has "mapSize" amount of traps.
 		Random random = new Random();
 		int goldCount = 0;
@@ -214,7 +214,7 @@ class Map {
 			goldCount++;
 		}
 	}
-	
+
 	public void placeSword(){ //places only one sword.
 		Random random = new Random();
 			int x = random.nextInt(mapSize);
@@ -223,7 +223,7 @@ class Map {
 				mapArray[x][y].roomContent = "S";
 			}
 	}
-	
+
 	public void checkRoom(){
 		int x = Player.x;
 		int y = Player.y;
@@ -231,7 +231,7 @@ class Map {
 			RogueExecutor.consoleTxt += "\nYOU ACTIVATED A TRAP AND DIED!\nGAME OVER!";
 			RogueExecutor.isGameOver = true;
 		}
-		if(mapArray[x][y].roomContent.equals("E")){	
+		if(mapArray[x][y].roomContent.equals("E")){
 			RogueExecutor.consoleTxt += "\nYOU HAVE ENCOUNTERED AN ENEMY! GET READY FOR BATTLE!";
 			if(RogueExecutor.hasInteracted){
 				if(Player.level >= Enemy.level){
@@ -243,7 +243,7 @@ class Map {
 				}
 			}
 		}
-		if(mapArray[x][y].roomContent.equals("S")){	
+		if(mapArray[x][y].roomContent.equals("S")){
 			if(Player.level<4){
 				RogueExecutor.consoleTxt += "\nYOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
 				Player.level++;
@@ -252,11 +252,11 @@ class Map {
 				Player.score += 10;
 			}
 		}
-		if(mapArray[x][y].roomContent.equals("G")){	
+		if(mapArray[x][y].roomContent.equals("G")){
 			RogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
 			Player.score += 10;
 		}
 	}
-	
+
 }
 
