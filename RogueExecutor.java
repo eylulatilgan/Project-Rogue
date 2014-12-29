@@ -60,14 +60,14 @@ public class RogueExecutor {
 
 	private void getMapSize() {
 		
-		JFrame dialogFrame 			 = new JFrame("Rogue Game");
-		JTextField boundarySizeInput = new JTextField(20);
-		JButton OKbutton 			 = new JButton("OK!");
+		JFrame dialogFrame = new JFrame("Rogue Game");
+		final JTextField boundarySizeInput = new JTextField(20); // final may not be needed due to an error
+		JButton OKbutton = new JButton("OK!");
 	
 		dialogFrame.setLayout(new FlowLayout());
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		
-		JDialog dialog = new JDialog(dialogFrame, "ROGUE GAME");
+		final JDialog dialog = new JDialog(dialogFrame, "ROGUE GAME"); // final may not be needed due to an error
 		dialog.setSize(500, 100);
 		dialog.setLayout(new FlowLayout());
         
@@ -78,6 +78,7 @@ public class RogueExecutor {
         OKbutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int size = Integer.parseInt(boundarySizeInput.getText());
+
 				if(size <= 20 && 10 <= size){
 					dummyBoundarySize = size;
 					callMapGenerator();
