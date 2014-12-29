@@ -50,11 +50,9 @@ class Player {
 	static int x;
 	static int y;
 
-	public Player(int x, int y){
+	public Player(){
 		level = 0;
 		score = 0;
-		this.x = x;
-		this.y = y;
 	}
 
 	public int getLevel() {
@@ -151,6 +149,10 @@ class Map {
 	public Map(){
 		mapSize = RogueExecutor.boundarySize;
 		mapArray = new Room[mapSize][mapSize];
+	}
+	
+	public int returnMapSize(){
+		return mapSize;
 	}
 
 	public void generateMap(){
