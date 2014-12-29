@@ -78,16 +78,18 @@ public class RogueExecutor {
         OKbutton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int size = Integer.parseInt(boundarySizeInput.getText());
-
-				if(size <= 20 && 10 <= size){
-					dummyBoundarySize = size;
-					callMapGenerator();
-					dialog.dispose();
+				try{
+					if(size <= 20 && 10 <= size){
+						dummyBoundarySize = size;
+						callMapGenerator();
+						dialog.dispose();
+					}
 				}
-				else
+				catch(NumberFormatException ex){
 					dialog.add(new JLabel(" (10-20) MEANS; YOU CAN ONLY USE NUMBERS BETWEEN 10 TO 20. SO PLEASE... "));
 					dialog.revalidate();
 					dialog.repaint();
+				}
 		}
 		});
         
