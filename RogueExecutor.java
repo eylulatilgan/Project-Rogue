@@ -36,7 +36,9 @@ public class RogueExecutor {
 	private JFrame gameFrame;
 	private JPanel gamePanel;
 	private Map map;
+	private Player player;
 	private JLabel [][] cells;
+	private RogueController controller;
 	private static final int CELL_SIZE = 30;
 	private ImageIcon characterIcon, roomIcon, emptyRoomIcon, enemyIcon, goldIcon, trapIcon, swordPNG; 
 	private JLabel character, room, emptyRoom, enemy, gold, trap, sword;
@@ -52,12 +54,7 @@ public class RogueExecutor {
 	
 	public static void main(String args[])
 	    {
-		EventQueue.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	            new RogueExecutor();
-	        }
-	    });
+	       new RogueExecutor();
 	    }
 
 	private void getMapSize() {
@@ -106,11 +103,62 @@ public class RogueExecutor {
 		initUI();
 		play();
 	}
-
 	
 	 private void play() {
-		placeCharacter();
-	}
+		
+		 placeCharacter();
+		 KeyListener listener = new KeyListener() {
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					int keyCode = e.getKeyCode();
+					switch( keyCode ) { 
+			        case KeyEvent.VK_UP:
+			        	System.out.println("Up!!");
+			        	controller.moveNorth();
+			        	updateCells(player.getX(), player.getY());
+			        	gameFrame.repaint();
+			        	System.out.println(player.getY());
+			            break;
+			        case KeyEvent.VK_DOWN:
+			            controller.moveSouth();
+			            updateCells(player.getX(), player.getY());
+			            gameFrame.repaint();
+			            break;
+			        case KeyEvent.VK_LEFT:
+			            controller.moveWest();
+			            updateCells(player.getX(), player.getY());
+			            gameFrame.repaint();
+			            break;
+			        case KeyEvent.VK_RIGHT :
+			            controller.moveEast();
+			            updateCells(player.getX(), player.getY());
+			            gameFrame.repaint();
+			            break;
+			     }
+					
+				}
+
+				private void updateCells(int x, int y) {
+					cells[x][y].setText("AA");
+					
+				}
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+		};
+			
+		 gameFrame.addKeyListener(listener);
+}
 
 	private void initUI() {
 		 cells = new JLabel[map.getMapBoundary()][map.getMapBoundary()];
@@ -140,7 +188,7 @@ public class RogueExecutor {
 
 
 public void placeCharacter(){
-	Player player =  new Player();
+	player =  new Player();
 	Random r1 = new Random();
 	Random r2 = new Random();
 	int x = r1.nextInt(dummyBoundarySize);
@@ -155,9 +203,12 @@ public void placeCharacter(){
 		}
 		
 	}
-	cells[x][y].setText("AA");;
+	cells[player.getX()][player.getY()].setText("AA");
 	gameFrame.repaint();
+	
+	controller = new RogueController(player, map.getMapBoundary());
 	}
+	
 }
 
 
