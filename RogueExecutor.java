@@ -26,6 +26,9 @@ public class RogueExecutor {
 	static int boundarySize = 10;
 	int x;
 	int y;
+
+	static int startX;
+	static int startY;
 	static boolean isGameOver = false;
 	static String consoleTxt = "";
 	static boolean hasInteracted = false;
@@ -148,6 +151,11 @@ public class RogueExecutor {
 			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
 			            //gameFrame.repaint();
 			            break;
+			        case KeyEvent.VK_SPACE :
+			        	if(player.getX() == startX && player.getY() == startY){
+			        		System.exit(0);
+			        	}
+			            break;
 			     }
 					
 				}
@@ -160,6 +168,10 @@ public class RogueExecutor {
 					cells[x][y].setBackground(Color.BLUE);
 					cells[preX][preY].setBackground(Color.WHITE);
 //					gamePanel.repaint();
+					if(map.getMapArray()[x][y].getRoomContent().equals("T")){
+						System.exit(0);
+					}
+						
 				}
 				
 				@Override
@@ -219,11 +231,19 @@ public void placeCharacter(){
 		if(map.getMapArray()[x][y].getRoomContent().equals("0")){
 					player.setX(x);
 					player.setY(y);
+
+					startX = x;
+					startY = y;
+					
 					//System.out.println("player coord: " + player.getX() + "," + player.getY());
 					charPlaced = true;
 		}
+
 		
 	}
+	
+
+	
 	cells[player.getX()][player.getY()].setText("B");
 	gameFrame.repaint();
 	
