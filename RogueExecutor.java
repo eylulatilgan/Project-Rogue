@@ -109,31 +109,40 @@ public class RogueExecutor {
 		
 		 placeCharacter();
 		 KeyListener listener = new KeyListener() {
+			 int previousX, previousY;
 				@Override
 				public void keyPressed(KeyEvent e) {
 					int keyCode = e.getKeyCode();
 					switch( keyCode ) { 
 			        case KeyEvent.VK_UP:
-			        	System.out.println("Up!!");
-			        	controller.moveNorth();
+			        	previousX = player.getX();
+			        	previousY = player.getY();
+			        	controller.moveNorth();			   
 			        	updateCellExploredStatus(player.getX(), player.getY());
-			        	//updateCurrentCell(player.getX(), player.getY());
-			        	//gameFrame.repaint();
-			        	//System.out.println(player.getY());
+			        	updateCurrentCell(player.getX(), player.getY(), previousX, previousY);		    
 			            break;
 			        case KeyEvent.VK_DOWN:
+			        	previousX = player.getX();
+			        	previousY = player.getY();
 			            controller.moveSouth();
 			            updateCellExploredStatus(player.getX(), player.getY());
+			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
 			            //gameFrame.repaint();
 			            break;
 			        case KeyEvent.VK_LEFT:
+			        	previousX = player.getX();
+			        	previousY = player.getY();
 			            controller.moveWest();
 			            updateCellExploredStatus(player.getX(), player.getY());
+			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
 			            //gameFrame.repaint();
 			            break;
 			        case KeyEvent.VK_RIGHT :
+			        	previousX = player.getX();
+			        	previousY = player.getY();
 			            controller.moveEast();
 			            updateCellExploredStatus(player.getX(), player.getY());
+			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
 			            //gameFrame.repaint();
 			            break;
 			     }
@@ -144,38 +153,15 @@ public class RogueExecutor {
 					map.getMapArray()[x][y].setExplored(true);
 				}
 				
-				private void updateCurrentCell(int x, int y) {
-					if(map.getMapArray()[x][y].getIsExplored()){
-						cells[x][y].setBackground(Color.GREEN);
-					} else{
-						cells[x][y].setBackground(Color.RED);
-					}
+				private void updateCurrentCell(int x, int y, int preX, int preY) {
+					cells[x][y].setBackground(Color.RED);
+					cells[preX][preY].setBackground(Color.GREEN);
+//					gamePanel.repaint();
 				}
-
-
+				
 				@Override
 				public void keyReleased(KeyEvent e) {
-					int keyCode = e.getKeyCode();
-					switch( keyCode ) { 
-			        case KeyEvent.VK_UP:
-			        	System.out.println("Up!!");
-			        	updateCurrentCell(player.getX(), player.getY());
-			        	gameFrame.repaint();
-			        	System.out.println(player.getY());
-			            break;
-			        case KeyEvent.VK_DOWN:
-			        	updateCurrentCell(player.getX(), player.getY());
-			            gameFrame.repaint();
-			            break;
-			        case KeyEvent.VK_LEFT:
-			        	updateCurrentCell(player.getX(), player.getY());
-			            gameFrame.repaint();
-			            break;
-			        case KeyEvent.VK_RIGHT :
-			        	updateCurrentCell(player.getX(), player.getY());
-			            gameFrame.repaint();
-			            break;
-					}
+					
 				}
 
 				@Override
@@ -207,6 +193,7 @@ public class RogueExecutor {
 				 //cells[i][j].setLocation(i, j);
 				 //cell.setIcon(map.getImage(map.getMapArray()[i][j]));
 				 gamePanel.add(cells[i][j]);
+				 
 			 }
 		 }
 		 
@@ -233,8 +220,8 @@ public void placeCharacter(){
 		}
 		
 	}
-	cells[player.getX()][player.getY()].setText("AA");
-	gameFrame.repaint();
+	//cells[player.getX()][player.getY()].setText("AA");
+	//gameFrame.repaint();
 	
 	controller = new RogueController(player, map.getMapBoundary());
 	}
