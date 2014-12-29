@@ -1,5 +1,8 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +30,7 @@ public class DummyRogueExecutor {
 	//private JTextField boundarySizeInput;
 	private int dummyBoundarySize;
 	private JFrame gameFrame;
+	private JPanel gamePanel;
 	
 	/*public static void execute(){
 		callMapGenerator();
@@ -93,20 +97,24 @@ public class DummyRogueExecutor {
 	
 	 private void initUI(Map map) {
 		 gameFrame = new JFrame();
+		 gamePanel = new JPanel();
+		 gamePanel.setLayout(new GridLayout(map.getMapBoundary(), map.getMapBoundary()));
 		 gameFrame.setTitle("Game");
-		 gameFrame.setSize(map.getMapBoundary() * 100, map.getMapBoundary() * 100);
+		 gameFrame.setSize(map.getMapBoundary() * 50, map.getMapBoundary() * 50);
 		
-		 for(int i = 0; i < map.getMapBoundary(); i += 10){
-			 for(int j = 0; j < map.getMapBoundary(); j += 10){
-				 JPanel cell = new JPanel();
-				 cell.setBounds(i, j, 10, 10);
-				 
-				 gameFrame.add(cell);
-				 
-				 
+		 for(int i = 0; i < map.getMapBoundary(); i ++){
+			 for(int j = 0; j < map.getMapBoundary(); j ++){
+				 JButton cell = new JButton(); //just for showing
+				 cell.setSize(50, 50);
+				 cell.setLocation(i, j);
+				 //cell.setIcon(map.getImage(map.getMapArray()[i][j]));
+				 gamePanel.add(cell);
 			 }
 		 }
 		 
+		 
+		 
+		 gameFrame.add(gamePanel);
 		 gameFrame.setLocationRelativeTo(null);
 		 gameFrame.setVisible(true);
 	}
@@ -180,7 +188,7 @@ class Map {
 		if(room.getIsExplored()){
 			image = new ImageIcon("ico-x.png");
 			image.getImage();
-		} else{
+		} else {
 			image = new ImageIcon("question.jpg");
 			image.getImage();
 		}
