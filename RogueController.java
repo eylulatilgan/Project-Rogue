@@ -4,35 +4,41 @@ public class RogueController {
 
 	Player player;
 	Map map;
-	int playerX = player.getX();
-	int playerY = player.getY();
-	int mapSize = map.mapSize;
+	int mapSize;
 	
-	public RogueController(Player player, Map map){
+	public RogueController(Player player, int mapSize){
 		this.player = player;
-		this.map = map;
+		this.mapSize = mapSize;
 	}
 	public void moveNorth(){
 		
-		if(playerY > 0 && playerY < mapSize)
-			player.setY(playerY-1);
+		if(player.getX() > 0)
+			player.setX(player.getX()-1);
+		else if(player.getX() == 0)
+			player.setX(player.getX());
 	}
 	
 	public void moveSouth(){
 		
-		if(playerY > 0 && playerY < mapSize)
-			player.setY(playerY+1);
-	}
-	
-	public void moveEast(){
-
-		if(playerX > 0 && playerX < mapSize)
-			player.setX(playerX+1);
+		if(player.getX() < mapSize-1)
+			player.setX(player.getX()+1);
+		else if(player.getX() == mapSize)
+			player.setX(player.getX());
 	}
 	
 	public void moveWest(){
 
-		if(playerX > 0 && playerX < mapSize)
-			player.setX(playerX-1);
+		if(player.getY() > 0)
+			player.setY(player.getY()-1);
+		else if(player.getY() == 0)
+			player.setY(player.getY());
+	}
+	
+	public void moveEast(){
+
+		if(player.getY() < mapSize-1)
+			player.setY(player.getY()+1);
+		else if(player.getY() == mapSize)
+			player.setY(player.getY());
 	}
 }
