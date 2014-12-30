@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -21,35 +22,24 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class RogueExecutor {
-
-	
-	static int boundarySize = 10;
-	int x;
-	int y;
-
 	static int startX;
 	static int startY;
 	static boolean isGameOver = false;
-	static String consoleTxt = "";
 	static boolean hasInteracted = false;
-	/*private JFrame dialogFrame;
-	private JDialog dialog;*/
-	//private JTextField boundarySizeInput;
-	private int dummyBoundarySize;
+	static String consoleTxt = "";
+	
+	private static final int CELL_SIZE = 30;
+	private static final int CONSOLE_PANEL_SIZE = 200;
+	private int boundarySize;
 	private JFrame gameFrame;
 	private JPanel gamePanel;
 	private Map map;
 	private Player player;
 	private JLabel [][] cells;
 	private RogueController controller;
-	private static final int CELL_SIZE = 30;
+	private JPanel consolePanel;
 	private ImageIcon characterIcon, roomIcon, emptyRoomIcon, enemyIcon, goldIcon, trapIcon, swordPNG; 
 	private JLabel character, room, emptyRoom, enemy, gold, trap, sword;
-	/*public static void execute(){
-		callMapGenerator();
-		if(isGameOver)
-			System.exit(0);
-	}*/
 	
 	public RogueExecutor(){
 		characterIcon = new ImageIcon("ico-x.png");
@@ -58,7 +48,14 @@ public class RogueExecutor {
 	
 	public static void main(String args[])
 	    {
-	       new RogueExecutor();
+	       Runnable r  = new Runnable() {
+	            @Override
+	            public void run() {
+	            	new RogueExecutor();
+	            }
+	        };
+
+	        EventQueue.invokeLater(r);
 	    }
 
 	private void getMapSize() {
@@ -83,7 +80,7 @@ public class RogueExecutor {
 				int size = Integer.parseInt(boundarySizeInput.getText());
 				try{
 					if(size <= 20 && 10 <= size){
-						dummyBoundarySize = size;
+						boundarySize = size;
 						callMapGenerator();
 						dialog.dispose();
 					}
@@ -101,19 +98,13 @@ public class RogueExecutor {
 	}
 	
 	public void callMapGenerator(){
-		map = new Map(dummyBoundarySize);
-		for(int i = 0; i < dummyBoundarySize; i++){
-			for(int j = 0; j < dummyBoundarySize; j++){
-				//System.out.println(map.getMapArray()[i][j].getRoomContent());
-			}
-		}	
+		map = new Map(boundarySize);	
 		initUI();
+		placeCharacter();
 		play();
 	}
 	
 	 private void play() {
-		
-		 placeCharacter();
 		 KeyListener listener = new KeyListener() {
 			 int previousX, previousY;
 				@Override
@@ -125,32 +116,43 @@ public class RogueExecutor {
 			        	previousY = player.getY();
 			        	controller.moveNorth();			   
 			        	updateCellExploredStatus(player.getX(), player.getY());
+			        	//consoleLabel.setText(consoleTxt);
+			        	System.out.println(consoleTxt);
 			        	updateCurrentCell(player.getX(), player.getY(), previousX, previousY);		    
 			            break;
 			        case KeyEvent.VK_DOWN:
 			        	previousX = player.getX();
 			        	previousY = player.getY();
 			            controller.moveSouth();
+			            //consoleLabel.setText(consoleTxt);
+			            System.out.println(consoleTxt);
 			            updateCellExploredStatus(player.getX(), player.getY());
+			            //UpdateConsoleMessage(player.getX(), player.getY());
 			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
-			            //gameFrame.repaint();
 			            break;
+			            
 			        case KeyEvent.VK_LEFT:
 			        	previousX = player.getX();
 			        	previousY = player.getY();
 			            controller.moveWest();
+			            //consoleLabel.setText(consoleTxt);
+			            System.out.println(consoleTxt);
 			            updateCellExploredStatus(player.getX(), player.getY());
+			            //UpdateConsoleMessage(player.getX(), player.getY());
 			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
-			            //gameFrame.repaint();
 			            break;
+			            
 			        case KeyEvent.VK_RIGHT :
 			        	previousX = player.getX();
 			        	previousY = player.getY();
 			            controller.moveEast();
+			            //consoleLabel.setText(consoleTxt);
+			            System.out.println(consoleTxt);
 			            updateCellExploredStatus(player.getX(), player.getY());
+			            //UpdateConsoleMessage(player.getX(), player.getY());
 			            updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
-			            //gameFrame.repaint();
 			            break;
+			            
 			        case KeyEvent.VK_SPACE :
 			        	if(player.getX() == startX && player.getY() == startY){
 			        		System.exit(0);
@@ -159,6 +161,12 @@ public class RogueExecutor {
 			     }
 					
 				}
+
+//				private void UpdateConsoleMessage(int PlayerX, int PlayerY) {
+//					if(map.getMapArray()[PlayerX][PlayerY].getRoomContent().equals("G"))
+//						consolePanel.add()
+//					
+//				}
 
 				private void updateCellExploredStatus(int x, int y) {
 					map.getMapArray()[x][y].setExplored(true);
@@ -190,14 +198,27 @@ public class RogueExecutor {
 }
 
 	private void initUI() {
-		 cells = new JLabel[map.getMapBoundary()][map.getMapBoundary()];
-		 gameFrame = new JFrame();
-		 gamePanel = new JPanel();
-		 Border border = BorderFactory.createLineBorder(Color.GRAY, 5);
-		 gamePanel.setLayout(new GridLayout(map.getMapBoundary(), map.getMapBoundary()));
-		 gameFrame.setTitle("Game");
-		 gameFrame.setSize(map.getMapBoundary() * CELL_SIZE, map.getMapBoundary() * CELL_SIZE);
+		JLabel dummy = new JLabel();
+		dummy.setText("lalala");
 		
+		cells = new JLabel[map.getMapBoundary()][map.getMapBoundary()];
+		 
+		 consolePanel = new JPanel();
+		 consolePanel.setBounds(map.getMapBoundary() * CELL_SIZE, 0, CONSOLE_PANEL_SIZE, map.getMapBoundary() * CELL_SIZE);
+		 consolePanel.setBackground(Color.GREEN);
+		 consolePanel.setLayout(new BorderLayout());
+		 consolePanel.add(dummy);
+		 
+		 gamePanel = new JPanel();
+		 gamePanel.setBounds(0,0,map.getMapBoundary() * CELL_SIZE, map.getMapBoundary() * CELL_SIZE);
+		 gamePanel.setLayout(new GridLayout(map.getMapBoundary(), map.getMapBoundary()));
+		 
+		 gameFrame = new JFrame();
+		 gameFrame.setTitle("Game");
+		 gameFrame.setSize(map.getMapBoundary() * CELL_SIZE  + CONSOLE_PANEL_SIZE, map.getMapBoundary() * CELL_SIZE);
+		 
+		 Border border = BorderFactory.createLineBorder(Color.GRAY, 5);
+		 
 		 for(int i = 0; i < map.getMapBoundary(); i ++){
 			 for(int j = 0; j < map.getMapBoundary(); j ++){
 				 cells[i][j] = new JLabel();
@@ -206,14 +227,13 @@ public class RogueExecutor {
 				 cells[i][j].setOpaque(true);
 				 cells[i][j].setBackground(Color.BLACK);
 				 cells[i][j].setBorder(border);
-				 //cells[i][j].setLocation(i, j);
-				 //cell.setIcon(map.getImage(map.getMapArray()[i][j]));
 				 gamePanel.add(cells[i][j]);
-				 
 			 }
 		 }
 		 
+		 consolePanel.setVisible(true);
 		 gameFrame.add(gamePanel);
+		 gameFrame.add(consolePanel);
 		 gameFrame.setLocationRelativeTo(null);
 		 gameFrame.setResizable(false);
 		 gameFrame.setVisible(true);
@@ -226,8 +246,8 @@ public void placeCharacter(){
 	while(!charPlaced){
 		Random r1 = new Random();
 		Random r2 = new Random();
-		int x = r1.nextInt(dummyBoundarySize);
-		int y = r2.nextInt(dummyBoundarySize);
+		int x = r1.nextInt(boundarySize);
+		int y = r2.nextInt(boundarySize);
 		if(map.getMapArray()[x][y].getRoomContent().equals("0")){
 					player.setX(x);
 					player.setY(y);
