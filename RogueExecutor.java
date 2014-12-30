@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -35,6 +37,7 @@ public class RogueExecutor {
 	static String consoleTxt = "";
 	static boolean hasInteracted = false;
 	JLabel consoleTxtLabel;
+	JLabel scoreLabel;
 	/*private JFrame dialogFrame;
 	private JDialog dialog;*/
 	//private JTextField boundarySizeInput;
@@ -49,7 +52,7 @@ public class RogueExecutor {
 	private static final int CELL_SIZE = 30;
 	private ImageIcon characterIcon, roomIcon, emptyRoomIcon, enemyIcon, goldIcon, trapIcon, swordPNG; 
 	private JLabel character, room, emptyRoom, enemyRoom, gold, trap, sword;
-	private static final int CONSOLE_PANEL_SIZE = 200;
+	private static final int CONSOLE_PANEL_SIZE = 220;
 	private JPanel consolePanel;
 
 	public RogueExecutor(){
@@ -178,11 +181,15 @@ public class RogueExecutor {
 							RogueExecutor.consoleTxt += "\nYOU WON .........";
 							System.out.println("won");
 							player.addScore (10 * enemy.getLevel());
+							JOptionPane.showMessageDialog(null, "YOU WON", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
 							map.mapArray[player.getX()][player.getY()].setRoomContent("0");
 						} else {
 							RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
 							System.out.println("lose");
-							System.exit(0);
+							JOptionPane.showMessageDialog(null, "YOU LOST", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
+							gameFrame.dispose();							
+							new RogueExecutor();
+							
 						}					
 					} 
 					
@@ -199,7 +206,7 @@ public class RogueExecutor {
 				cells[x][y].setBackground(Color.BLUE);
 				cells[preX][preY].setBackground(Color.WHITE);
 				
-				gameFrame.repaint();
+ 				gameFrame.repaint();
 				if(map.getMapArray()[x][y].getRoomContent().equals("G")){
 					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Gold.png")));
 					consoleTxtLabel.setText(consoleTxt);
@@ -257,11 +264,18 @@ public class RogueExecutor {
 		 consoleTxtLabel.setSize(CONSOLE_PANEL_SIZE, CONSOLE_PANEL_SIZE);
 		 cells = new JLabel[map.getMapBoundary()][map.getMapBoundary()];
 		 
+		 scoreLabel = new JLabel();
+		 scoreLabel.setSize(200, 200);
+		 scoreLabel.setLocation(500,500);
+		 scoreLabel.setText("blabla");
+		 scoreLabel.setForeground(Color.RED);
+		 
 		 consolePanel = new JPanel();
 		 consolePanel.setBounds(map.getMapBoundary() * CELL_SIZE, 0, CONSOLE_PANEL_SIZE, map.getMapBoundary() * CELL_SIZE);
 		 consolePanel.setBackground(Color.GREEN);
 		 consolePanel.setLayout(new FlowLayout());
-		 consolePanel.add(consoleTxtLabel,0);
+		 consolePanel.add(consoleTxtLabel);
+		 consolePanel.add(scoreLabel);
 		 
 		 gamePanel = new JPanel();
 		 gamePanel.setBounds(0,0,map.getMapBoundary() * CELL_SIZE, map.getMapBoundary() * CELL_SIZE);
@@ -466,32 +480,32 @@ class Map {
 		int x = player.getX();
 		int y = player.getY();
 		if(mapArray[x][y].getRoomContent().equals("T")){
-			RogueExecutor.consoleTxt += "\nYOU ACTIVATED A TRAP AND DIED!\nGAME OVER!";
+			RogueExecutor.consoleTxt = "<html>YOU ACTIVATED A TRAP AND DIED!<br>GAME OVER!</html>";
 			RogueExecutor.isGameOver = true;
 		}
 		if(mapArray[x][y].getRoomContent().equals("E")){	
-			RogueExecutor.consoleTxt += "\nYOU HAVE ENCOUNTERED AN ENEMY! GET READY FOR BATTLE!";
+			RogueExecutor.consoleTxt = "<html>YOU HAVE ENCOUNTERED AN ENEMY!<br> GET READY FOR BATTLE!</html>";
 			if(RogueExecutor.hasInteracted){
 				if(player.getLevel() >= enemy.getLevel()){
-					RogueExecutor.consoleTxt += "\nYOU WON .........";
+					RogueExecutor.consoleTxt = "\nYOU WON .........";
 					player.addScore (10 * enemy.getLevel());
 				} else {
-					RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
+					RogueExecutor.consoleTxt = "\nYOU LOST, DIED .........";
 					RogueExecutor.isGameOver = true;
 				}
 			}
 		}
 		if(mapArray[x][y].getRoomContent().equals("S")){	
 			if(player.getLevel() < 4){
-				RogueExecutor.consoleTxt += " \n YOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
+				RogueExecutor.consoleTxt = "<html>YOU HAVE FOUND A SWORD.<br>NOW YOU CAN FACE THE TOUGHER MONSTERS!</html>";
 				player.setLevel(player.getLevel() + 1);
 			} else {
-				RogueExecutor.consoleTxt += "YOU HAVE FOUND SOME GOLD! 'SHINY!'";
+				RogueExecutor.consoleTxt = "YOU HAVE FOUND SOME GOLD! 'SHINY!'";
 				player.setScore (player.getScore() + 10);
 			}
 		}
 		if(mapArray[x][y].getRoomContent().equals("G")){	
-			RogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
+			RogueExecutor.consoleTxt = "YOU HAVE FOUND SOME GOLD! 'SHINY!'";
 			player.setScore (player.getScore() + 10);
 		}
 	}
