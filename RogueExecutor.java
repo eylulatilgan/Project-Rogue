@@ -116,50 +116,64 @@ public class RogueExecutor {
 
 		placeCharacter();
 		KeyListener listener = new KeyListener() {
+			boolean moveable = true;
 			int previousX, previousY;
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
-				switch( keyCode ) { 
+				switch( keyCode ) {
 				case KeyEvent.VK_UP:
-					map.checkRoom(player, enemy);
-					previousX = player.getX();
-					previousY = player.getY();
-					controller.moveNorth();			   
-					updateCellExploredStatus(player.getX(), player.getY());
-					updateCurrentCell(player.getX(), player.getY(), previousX, previousY);		    
+					if(moveable) {
+						map.checkRoom(player, enemy);
+						previousX = player.getX();
+						previousY = player.getY();
+						controller.moveNorth();
+						updateCellExploredStatus(player.getX(), player.getY());
+						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					}
+					moveable = false;
 					break;
 				case KeyEvent.VK_DOWN:
-					map.checkRoom(player, enemy);
-					previousX = player.getX();
-					previousY = player.getY();
-					controller.moveSouth();
-					updateCellExploredStatus(player.getX(), player.getY());
-					updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					if(moveable) {
+						map.checkRoom(player, enemy);
+						previousX = player.getX();
+						previousY = player.getY();
+						controller.moveSouth();
+						updateCellExploredStatus(player.getX(), player.getY());
+						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					}
+					moveable = false;
 					//gameFrame.repaint();
 					break;
 				case KeyEvent.VK_LEFT:
-					map.checkRoom(player, enemy);
-					previousX = player.getX();
-					previousY = player.getY();
-					controller.moveWest();
-					updateCellExploredStatus(player.getX(), player.getY());
-					updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					if(moveable) {
+						map.checkRoom(player, enemy);
+						previousX = player.getX();
+						previousY = player.getY();
+						controller.moveWest();
+						updateCellExploredStatus(player.getX(), player.getY());
+						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					}
+					moveable = false;
 					//gameFrame.repaint();
 					break;
 				case KeyEvent.VK_RIGHT :
-					map.checkRoom(player, enemy);
-					previousX = player.getX();
-					previousY = player.getY();
-					controller.moveEast();
-					updateCellExploredStatus(player.getX(), player.getY());
-					updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					if(moveable) {
+						map.checkRoom(player, enemy);
+						previousX = player.getX();
+						previousY = player.getY();
+						controller.moveEast();
+						updateCellExploredStatus(player.getX(), player.getY());
+						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+					}
+					moveable = false;
 					//gameFrame.repaint();
 					break;
 				case KeyEvent.VK_SPACE :
 					if(player.getX() == startX && player.getY() == startY){
 						System.exit(0);
 					}
+					moveable = true;
 					
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("G")){
 						player.addScore(10);
@@ -172,7 +186,7 @@ public class RogueExecutor {
 						System.out.println(player.getLevel());
 					}  
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("E")){
-						if(player.getLevel() == enemy.getLevel()){
+						 if(player.getLevel() == enemy.getLevel())  {
 							RogueExecutor.consoleTxt += "\nYOU WON .........";
 							System.out.println("won");
 							player.addScore (10 * enemy.getLevel());
