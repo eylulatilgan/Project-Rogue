@@ -116,64 +116,52 @@ public class RogueExecutor {
 
 		placeCharacter();
 		KeyListener listener = new KeyListener() {
-			boolean moveable = true;
-			int previousX, previousY;
+			boolean movable = true;
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
-				switch( keyCode ) {
+				switch( keyCode ) { 
 				case KeyEvent.VK_UP:
-					if(moveable) {
+					if(movable){
 						map.checkRoom(player, enemy);
-						previousX = player.getX();
-						previousY = player.getY();
 						controller.moveNorth();
 						updateCellExploredStatus(player.getX(), player.getY());
-						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+						updateCurrentCell(player.getX(), player.getY(), player.getX()+1, player.getY());	
 					}
-					moveable = false;
+					movable = false;		    
 					break;
 				case KeyEvent.VK_DOWN:
-					if(moveable) {
+					if(movable){
 						map.checkRoom(player, enemy);
-						previousX = player.getX();
-						previousY = player.getY();
 						controller.moveSouth();
 						updateCellExploredStatus(player.getX(), player.getY());
-						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+						updateCurrentCell(player.getX(), player.getY(), player.getX()-1, player.getY());
 					}
-					moveable = false;
-					//gameFrame.repaint();
+					movable = false;		    
 					break;
 				case KeyEvent.VK_LEFT:
-					if(moveable) {
+					if(movable){
 						map.checkRoom(player, enemy);
-						previousX = player.getX();
-						previousY = player.getY();
 						controller.moveWest();
 						updateCellExploredStatus(player.getX(), player.getY());
-						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+						updateCurrentCell(player.getX(), player.getY(), player.getX(), player.getY()+1);
 					}
-					moveable = false;
-					//gameFrame.repaint();
+					movable = false;		    
 					break;
 				case KeyEvent.VK_RIGHT :
-					if(moveable) {
+					if(movable){
 						map.checkRoom(player, enemy);
-						previousX = player.getX();
-						previousY = player.getY();
 						controller.moveEast();
 						updateCellExploredStatus(player.getX(), player.getY());
-						updateCurrentCell(player.getX(), player.getY(), previousX, previousY);
+						updateCurrentCell(player.getX(), player.getY(), player.getX(), player.getY()-1);
 					}
-					moveable = false;
-					//gameFrame.repaint();
+					movable = false;		    
 					break;
 				case KeyEvent.VK_SPACE :
+					movable = true;
 					if(player.getX() == startX && player.getY() == startY){
 						System.exit(0);
 					}
-					moveable = true;
 					
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("G")){
 						player.addScore(10);
@@ -186,7 +174,7 @@ public class RogueExecutor {
 						System.out.println(player.getLevel());
 					}  
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("E")){
-						 if(player.getLevel() == enemy.getLevel())  {
+						if(player.getLevel() == enemy.getLevel()){
 							RogueExecutor.consoleTxt += "\nYOU WON .........";
 							System.out.println("won");
 							player.addScore (10 * enemy.getLevel());
@@ -196,8 +184,6 @@ public class RogueExecutor {
 							System.out.println("lose");
 							System.exit(0);
 						}					
-						
-						
 					} 
 					
 					break;
@@ -215,25 +201,37 @@ public class RogueExecutor {
 				
 				gameFrame.repaint();
 				if(map.getMapArray()[x][y].getRoomContent().equals("G")){
-					cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("goldusama.jpg")));
+					cells[x][y].setIcon(new ImageIcon(getClass().getResource("goldusama.jpg")));
 					consoleTxtLabel.setText(consoleTxt);
 					gameFrame.repaint();
 				}
 				
 				if(map.getMapArray()[x][y].getRoomContent().equals("T")){
-					cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("beartrap.png")));
+					cells[x][y].setIcon(new ImageIcon(getClass().getResource("beartrap.png")));
 					consoleTxtLabel.setText(consoleTxt);
 				 	gameFrame.repaint();
 				}
 				
 				if(map.getMapArray()[x][y].getRoomContent().equals("E")){
-					//cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("goldusama.jpg")));
-					consoleTxtLabel.setText(consoleTxt);
-					gameFrame.repaint();
+					if(enemy.getLevel() == 1){
+						cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("Zombie.png")));
+						consoleTxtLabel.setText(consoleTxt);
+						gameFrame.repaint();
+					}
+					if(enemy.getLevel() == 2){
+						cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("Vampire.png")));
+						consoleTxtLabel.setText(consoleTxt);
+						gameFrame.repaint();
+					}
+					if(enemy.getLevel() == 3){
+						cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("Imp.png")));
+						consoleTxtLabel.setText(consoleTxt);
+						gameFrame.repaint();
+					}
 				}
 				
 				if(map.getMapArray()[x][y].getRoomContent().equals("S")){
-					cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("Outcast_sword.png")));
+					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Outcast_sword.png")));
 					consoleTxtLabel.setText(consoleTxt);
 					gameFrame.repaint();
 				}
@@ -590,3 +588,4 @@ class Enemy {
 	}	
 
 }
+
