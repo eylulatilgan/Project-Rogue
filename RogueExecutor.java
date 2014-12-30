@@ -122,6 +122,7 @@ public class RogueExecutor {
 				int keyCode = e.getKeyCode();
 				switch( keyCode ) { 
 				case KeyEvent.VK_UP:
+					map.checkRoom(player, enemy);
 					previousX = player.getX();
 					previousY = player.getY();
 					controller.moveNorth();			   
@@ -129,6 +130,7 @@ public class RogueExecutor {
 					updateCurrentCell(player.getX(), player.getY(), previousX, previousY);		    
 					break;
 				case KeyEvent.VK_DOWN:
+					map.checkRoom(player, enemy);
 					previousX = player.getX();
 					previousY = player.getY();
 					controller.moveSouth();
@@ -137,6 +139,7 @@ public class RogueExecutor {
 					//gameFrame.repaint();
 					break;
 				case KeyEvent.VK_LEFT:
+					map.checkRoom(player, enemy);
 					previousX = player.getX();
 					previousY = player.getY();
 					controller.moveWest();
@@ -145,6 +148,7 @@ public class RogueExecutor {
 					//gameFrame.repaint();
 					break;
 				case KeyEvent.VK_RIGHT :
+					map.checkRoom(player, enemy);
 					previousX = player.getX();
 					previousY = player.getY();
 					controller.moveEast();
@@ -203,7 +207,7 @@ public class RogueExecutor {
 				}
 				
 				if(map.getMapArray()[x][y].getRoomContent().equals("T")){
-					//cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("goldusama.jpg")));
+					cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("beartrap.png")));
 					consoleTxtLabel.setText(consoleTxt);
 				 	gameFrame.repaint();
 				}
@@ -215,7 +219,7 @@ public class RogueExecutor {
 				}
 				
 				if(map.getMapArray()[x][y].getRoomContent().equals("S")){
-					//cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("goldusama.jpg")));
+					cells[preX][preY].setIcon(new ImageIcon(getClass().getResource("Outcast_sword.png")));
 					consoleTxtLabel.setText(consoleTxt);
 					gameFrame.repaint();
 				}
@@ -238,6 +242,7 @@ public class RogueExecutor {
 
 	private void initUI() {
 		 consoleTxtLabel = new JLabel();
+		 consoleTxtLabel.setSize(CONSOLE_PANEL_SIZE, CONSOLE_PANEL_SIZE);
 		 cells = new JLabel[map.getMapBoundary()][map.getMapBoundary()];
 		 
 		 consolePanel = new JPanel();
@@ -286,6 +291,7 @@ public class RogueExecutor {
 			int x = r1.nextInt(BoundarySize);
 			int y = r2.nextInt(BoundarySize);
 			if(map.getMapArray()[x][y].getRoomContent().equals("0")){
+				map.mapArray[x][y].setRoomContent("B");
 				player.setX(x);
 				player.setY(y);
 
@@ -465,10 +471,10 @@ class Map {
 		}
 		if(mapArray[x][y].getRoomContent().equals("S")){	
 			if(player.getLevel() < 4){
-				RogueExecutor.consoleTxt += "\nYOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
+				RogueExecutor.consoleTxt += " \n YOU HAVE FOUND A SWORD. NOW YOU CAN FACE THE TOUGHER MONSTERS!";
 				player.setLevel(player.getLevel() + 1);
 			} else {
-				RogueExecutor.consoleTxt += "\nYOU HAVE FOUND SOME GOLD! 'SHINY!'";
+				RogueExecutor.consoleTxt += "YOU HAVE FOUND SOME GOLD! 'SHINY!'";
 				player.setScore (player.getScore() + 10);
 			}
 		}
