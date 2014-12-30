@@ -201,7 +201,7 @@ public class RogueExecutor {
 				
 				gameFrame.repaint();
 				if(map.getMapArray()[x][y].getRoomContent().equals("G")){
-					cells[x][y].setIcon(new ImageIcon(getClass().getResource("goldusama.jpg")));
+					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Gold.png")));
 					consoleTxtLabel.setText(consoleTxt);
 					gameFrame.repaint();
 				}
