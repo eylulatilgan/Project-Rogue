@@ -20,15 +20,28 @@ import javax.swing.border.Border;
 
 public class RogueExecutor {
 
+/*
+ *   THINGS LEFT TO DO
+ *   
+ *   BOSS ROOM/FIGHT
+ *   NEIGHBOUR CHECK -> CONSOLE REPORT
+ *   SCORE - LEVEL - HEALTH BOARD ON CONSOLE 
+ *   ARTIFACTS (ROOMVIEWER, GOLD/TRAP SHOWER, HEARTS)
+ *   
+ *   ++HEALTH -> DROPS WHEN EQUAL LEVEL FIGHTS
+ *   ++BETTER RANDOM ALGORITHM FOR PLACERS
+ *    
+ * 
+ */
 
 	static int boundarySize = 10;
 	int x;
 	int y;
 
-	static int startX;
-	static int startY;
-	static int trapX;
-	static int trapY;
+	int startX;
+	int startY;
+	static int bossX;
+	static int bossY;
 	static boolean isGameOver = false;
 	static String consoleTxt = "";
 	static boolean hasInteracted = false;
@@ -42,12 +55,9 @@ public class RogueExecutor {
 	private JPanel gamePanel;
 	private Map map;
 	private Player player;
-	private Enemy enemy;
 	private JLabel [][] cells;
 	private RogueController controller;
 	private static final int CELL_SIZE = 30;
-	private ImageIcon characterIcon, roomIcon, emptyRoomIcon, enemyIcon, goldIcon, trapIcon, swordPNG; 
-	private JLabel character, room, emptyRoom, enemyRoom, gold, trap, sword;
 	private static final int CONSOLE_PANEL_SIZE = 220;
 	private JPanel consolePanel;
 
@@ -106,6 +116,7 @@ public class RogueExecutor {
 				//System.out.println(map.getMapArray()[i][j].getRoomContent());
 			}
 		}	
+
 		initUI();
 		play();
 	}
@@ -113,6 +124,17 @@ public class RogueExecutor {
 	private void play() {
 
 		placeCharacter();
+		
+		if(player.getHealth() == 0){
+			RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
+			JOptionPane.showMessageDialog(null, "YOU DIED!", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
+			gameFrame.dispose();							
+			new RogueExecutor();
+		}
+		if(player.getHealth() == 1){
+			RogueExecutor.consoleTxt += "\nYOU ARE SEVERELY INJURED. YOU CANT KEEP FIGHTING LIKE THIS...";
+			JOptionPane.showMessageDialog(null, "YOU ARE INJURED!", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
+		}
 		KeyListener listener = new KeyListener() {
 			boolean movable = true;
 			@Override
@@ -160,9 +182,13 @@ public class RogueExecutor {
 						System.out.println(player.getScore());
 					} 
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("S")){
-						player.lvlUp();
-						map.mapArray[player.getX()][player.getY()].setRoomContent("0");
-						System.out.println(player.getLevel());
+						if(player.getLevel() <= 3){
+							player.lvlUp();
+							map.mapArray[player.getX()][player.getY()].setRoomContent("0");
+							System.out.println(player.getLevel());
+						} else {
+							player.addScore(10);
+						}
 					}  
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("T")){
 						RogueExecutor.consoleTxt += "\nYOU HAVE JUST ACTIVATED A TRAP AND DIED!";
@@ -173,9 +199,13 @@ public class RogueExecutor {
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("E")){
 						if(player.getLevel() >= 1){
 							RogueExecutor.consoleTxt += "\nYOU WON .........";
-							player.addScore (10 * enemy.getLevel());
+							player.addScore (10 * 1);
 							JOptionPane.showMessageDialog(null, "YOU WON 1", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
 							map.mapArray[player.getX()][player.getY()].setRoomContent("0");
+							if(player.getLevel() == 1){
+								player.damage();
+								System.out.println(player.getHealth()+"hp");
+							}
 						} else {
 							RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
 							JOptionPane.showMessageDialog(null, "YOU LOST 1", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
@@ -187,9 +217,13 @@ public class RogueExecutor {
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("EE")){
 						if(player.getLevel() >= 2){
 							RogueExecutor.consoleTxt += "\nYOU WON .........";
-							player.addScore (10 * enemy.getLevel());
+							player.addScore (10 * 2);
 							JOptionPane.showMessageDialog(null, "YOU WON 2", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
 							map.mapArray[player.getX()][player.getY()].setRoomContent("0");
+							if(player.getLevel() == 2){
+								player.damage();
+								System.out.println(player.getHealth()+"hp");
+							}
 						} else {
 							RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
 							JOptionPane.showMessageDialog(null, "YOU LOST 2", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
@@ -201,9 +235,13 @@ public class RogueExecutor {
 					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("EEE")){
 						if(player.getLevel() >= 3){
 							RogueExecutor.consoleTxt += "\nYOU WON .........";
-							player.addScore (10 * enemy.getLevel());
+							player.addScore (10 * 3);
 							JOptionPane.showMessageDialog(null, "YOU WON 3", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
 							map.mapArray[player.getX()][player.getY()].setRoomContent("0");
+							if(player.getLevel() == 3){
+								player.damage();
+								System.out.println(player.getHealth()+"hp");
+							}
 						} else {
 							RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
 							JOptionPane.showMessageDialog(null, "YOU LOST 3", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
@@ -212,12 +250,40 @@ public class RogueExecutor {
 							
 						}					
 					} 
+					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("EEEE")){
+						if(player.getLevel() >= 4){
+							RogueExecutor.consoleTxt += "\nYOU WON .........";
+							player.addScore (10 * 4);
+							JOptionPane.showMessageDialog(null, "YOU WON 4", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
+							map.mapArray[player.getX()][player.getY()].setRoomContent("0");
+							if(player.getLevel() == 4){
+								player.damage();
+								System.out.println(player.getHealth()+"hp");
+							}
+						} else {
+							RogueExecutor.consoleTxt += "\nYOU LOST, DIED .........";
+							JOptionPane.showMessageDialog(null, "YOU LOST 4", "Rogue ", JOptionPane.INFORMATION_MESSAGE);
+							gameFrame.dispose();							
+							new RogueExecutor();
+							
+						}					
+					}
+					
 					
 					break;
 				case KeyEvent.VK_R :
+					//EXIT
 					if(player.getX() == startX && player.getY() == startY){
 						gameFrame.dispose();							
 						new RogueExecutor();
+						
+					}
+					//BOSS
+					if(map.mapArray[player.getX()][player.getY()].getRoomContent().equals("B")){
+						if(player.getLevel() >= 4){
+							
+							
+						}
 						
 					}
 					
@@ -258,6 +324,16 @@ public class RogueExecutor {
 				}
 				if(map.getMapArray()[x][y].getRoomContent().equals("EEE")){
 					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Imp.png")));
+					consoleTxtLabel.setText(consoleTxt);
+					gameFrame.repaint();
+				}
+				if(map.getMapArray()[x][y].getRoomContent().equals("EEEE")){
+					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Troll.png")));
+					consoleTxtLabel.setText(consoleTxt);
+					gameFrame.repaint();
+				}
+				if(map.getMapArray()[x][y].getRoomContent().equals("B")){
+					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Dragon.png")));
 					consoleTxtLabel.setText(consoleTxt);
 					gameFrame.repaint();
 				}
@@ -334,7 +410,6 @@ public class RogueExecutor {
 
 	public void placeCharacter(){
 		player =  new Player();
-		enemy = new Enemy();
 		boolean charPlaced = false;
 		while(!charPlaced){
 			Random r1 = new Random();
@@ -342,14 +417,13 @@ public class RogueExecutor {
 			int x = r1.nextInt(BoundarySize);
 			int y = r2.nextInt(BoundarySize);
 			if(map.getMapArray()[x][y].getRoomContent().equals("0")){
-				map.mapArray[x][y].setRoomContent("B");
+				map.mapArray[x][y].setRoomContent("C");
 				player.setX(x);
 				player.setY(y);
 
 				startX = x;
 				startY = y;
 
-				//System.out.println("player coord: " + player.getX() + "," + player.getY());
 				charPlaced = true;
 			}
 
@@ -395,6 +469,11 @@ class Map {
 
 	private int mapSize;
 	protected Room[][] mapArray;
+	RogueExecutor re = new RogueExecutor();
+	Player player = new Player();
+	private int startX = re.startX;
+	private int startY = re.startY;
+	
 
 	public Map(int mapSize){
 		this.mapSize = mapSize;
@@ -403,7 +482,6 @@ class Map {
 	}
 
 	public void generateMap(){
-		//System.out.println("hello I'm here!! ");
 		initRooms();
 		placeTraps();
 		placeEnemies();
@@ -412,7 +490,6 @@ class Map {
 	}
 
 	public void initRooms(){
-		//System.out.println("hello I'm here!! ");
 		for (int i = 0; i < mapSize; i++){
 			for(int j = 0; j < mapSize; j++){
 				mapArray[i][j] = new Room();
@@ -430,28 +507,18 @@ class Map {
 		return mapSize;
 	}
 
-	public ImageIcon getImage(Room room){
-		ImageIcon image;
-		if(room.getIsExplored()){
-			image = new ImageIcon("ico-x.png");
-			image.getImage();
-		} else {
-			image = new ImageIcon("question.jpg");
-			image.getImage();
-		}
-
-		return image;
-	}
-	public void placeTraps(){ //assumes that the dungeon has "mapSize" amount of traps.
+	public void placeTraps(){ 
 		int trapCount = 0;
 		while(trapCount < (int) (0.05 * mapSize * mapSize)){
 			Random random = new Random();
 			int x = random.nextInt(mapSize);
 			int y = random.nextInt(mapSize);
 			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
-				mapArray[x][y].setRoomContent("T");	
-				RogueExecutor.trapX = x;
-				RogueExecutor.trapY = y;
+				if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2){
+					System.out.println(startX + " " + startY);
+					System.out.println(player.getX() + "-" + player.getY());
+					mapArray[x][y].setRoomContent("T");	
+				}
 			} else {
 				continue;
 			}
@@ -459,25 +526,42 @@ class Map {
 		}
 	}
 
-	public void placeEnemies(){ //assumes that the dungeon has "mapSize" amount of enemies.
+	public void placeEnemies(){
 		int enemiesCount = 0;
 		while(enemiesCount < (int) (0.20 * mapSize * mapSize)){
 			Random random = new Random();
 			int x = random.nextInt(mapSize);
 			int y = random.nextInt(mapSize);
 			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
-				int elvl = random.nextInt(3);
+				int elvl = random.nextInt(4);
 				if(elvl == 0)
-					mapArray[x][y].setRoomContent("E");
+					if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2)
+						mapArray[x][y].setRoomContent("E");
 				if(elvl == 1)
-					mapArray[x][y].setRoomContent("EE");
+					if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2)
+						mapArray[x][y].setRoomContent("EE");
 				if(elvl == 2)
-					mapArray[x][y].setRoomContent("EEE");
+					if(Math.abs(x-startX) >= 3 || Math.abs(y-startY) >= 3)
+						mapArray[x][y].setRoomContent("EEE");
+				if(elvl == 3)
+					if(Math.abs(x-startX) >= 4 || Math.abs(y-startY) >= 4)
+						mapArray[x][y].setRoomContent("EEEE");
 			} else {
 				continue;
 			}
 			enemiesCount++;
 		}
+	}
+	
+
+	public void placeBoss(){ 
+		Random random = new Random();
+		int x = random.nextInt(mapSize);
+		int y = random.nextInt(mapSize);
+		if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
+			if(Math.abs(x-startX) >= 4 || Math.abs(y-startY) >= 4)
+				mapArray[x][y].setRoomContent("B");	
+		} 
 	}
 
 	public void placeGold(){ //assumes that the dungeon has "mapSize" amount of traps.
@@ -497,7 +581,7 @@ class Map {
 
 	public void placeSword(){ //places only one sword.
 		int swordCount = 0;
-		while(swordCount  < (int) (0.15 * mapSize * mapSize)){
+		while(swordCount  < (int) (0.1 * mapSize * mapSize)){
 			Random random = new Random();
 			int x = random.nextInt(mapSize);
 			int y = random.nextInt(mapSize);
@@ -517,12 +601,26 @@ class Player {
 
 	private int level;
 	private int score;
+	private int health;
 	private int x;
 	private int y;
 
 	public Player(){
 		level = 0;
 		score = 0;
+		health = 3;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public void damage(){
+		health--;
 	}
 
 	public int getLevel() {
