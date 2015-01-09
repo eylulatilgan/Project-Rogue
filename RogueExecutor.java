@@ -10,7 +10,6 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -37,6 +36,7 @@ public class RogueExecutor {
  * 
  */
 
+	static int boundarySize = 10;
 	int x;
 	int y;
 
@@ -410,11 +410,21 @@ public class RogueExecutor {
 		 consolePanel = new JPanel();
 		 consolePanel.setBounds(map.getMapBoundary() * CELL_SIZE, 0, CONSOLE_PANEL_SIZE, map.getMapBoundary() * CELL_SIZE);
 		 consolePanel.setBackground(Color.BLACK);
-		 consolePanel.setLayout(new BoxLayout(consolePanel, BoxLayout.PAGE_AXIS)); 
-		 consolePanel.add(scoreLabel);
-		 consolePanel.add(levelLabel);
-		 consolePanel.add(healthLabel);
-		 consolePanel.add(consoleTxtLabel);
+		 consolePanel.setLayout(new BorderLayout());
+		
+		 if(boundarySize < 12){
+			 myFont = new Font("Press Start 2P", Font.PLAIN, 15);
+			 scoreLabel.setFont(myFont);
+			 levelLabel.setFont(myFont);
+			 consolePanel.add(consoleTxtLabel);
+		 } else {
+			 consolePanel.add(consoleTxtLabel, BorderLayout.PAGE_START);
+		 }
+		 
+		 
+		 consolePanel.add(scoreLabel, BorderLayout.CENTER);
+		 consolePanel.add(levelLabel, BorderLayout.PAGE_START);
+		 consolePanel.add(healthLabel, BorderLayout.CENTER);
 		 
 		 gamePanel = new JPanel();
 		 gamePanel.setBounds(0,0,map.getMapBoundary() * CELL_SIZE, map.getMapBoundary() * CELL_SIZE);
