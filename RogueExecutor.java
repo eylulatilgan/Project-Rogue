@@ -59,7 +59,7 @@ public class RogueExecutor {
 	private JLabel [][] cells;
 	private RogueController controller;
 	private static final int CELL_SIZE = 30;
-	private static final int CONSOLE_PANEL_SIZE = 280;
+	private static final int CONSOLE_PANEL_SIZE = 220;
 	private JPanel consolePanel;
 
 	public RogueExecutor(){
@@ -317,7 +317,7 @@ public class RogueExecutor {
  				gameFrame.repaint();
 				if(map.getMapArray()[x][y].getRoomContent().equals("G")){
 					cells[x][y].setIcon(new ImageIcon(getClass().getResource("Gold.png")));
-					RogueExecutor.consoleTxt = "Oooh~ shiny! You got rich!";
+					RogueExecutor.consoleTxt = "Oooh~ shiny! Gold!";
 					consoleTxtLabel.setText(consoleTxt);
 					gameFrame.repaint();
 				}
@@ -384,18 +384,18 @@ public class RogueExecutor {
 	}
 
 	private void initUI() {
-	     Font myFont = new Font("Press Start 2P", Font.PLAIN, 20);
-		 Font myFont2 = new Font("Press Start 2P", Font.PLAIN, 10);
+	     Font statusFont = new Font("Press Start 2P", Font.PLAIN, 30);
+	     Font consoleFont = new Font("Press Start 2P", Font.PLAIN, 20);
 		 consoleTxtLabel = new JLabel();
 		 consoleTxtLabel.setSize(CONSOLE_PANEL_SIZE, CONSOLE_PANEL_SIZE);
-		 consoleTxtLabel.setFont(myFont2);
+		 consoleTxtLabel.setFont(consoleFont);
 		 consoleTxtLabel.setForeground(Color.LIGHT_GRAY);
 		 cells = new JLabel[map.getMapBoundary()][map.getMapBoundary()];
 		 
 		 scoreLabel = new JLabel();
 		 scoreLabel.setSize(200, 200);
 		 scoreLabel.setText("Score: 0");
-		 scoreLabel.setFont(myFont);
+		 scoreLabel.setFont(statusFont);
 		 scoreLabel.setForeground(Color.BLUE);
 		 //scoreLabel.setLayout(new BorderLayout());
 		 
@@ -403,8 +403,8 @@ public class RogueExecutor {
 		 healthLabel.setIcon(new ImageIcon(getClass().getResource("ThreeHearts.png")));
 		 
 		 levelLabel = new JLabel();
-		 levelLabel.setFont(myFont);
-		 levelLabel.setText("Level : 1" );
+		 levelLabel.setFont(statusFont);
+		 levelLabel.setText("Level : 0" );
 		 levelLabel.setForeground(Color.BLUE);
 		 
 		 consolePanel = new JPanel();
@@ -461,10 +461,14 @@ public class RogueExecutor {
 
 				startX = x;
 				startY = y;
+				System.out.println(startX + " sx " + x + " x ");
+				System.out.println(startY + " sy " + y + " y ");
 
 				charPlaced = true;
 			}
 
+			System.out.println(startX + " sx ");
+			System.out.println(startY + " sy ");
 			map.setStartX(startX);
 			map.setStartY(startY);
 		}
@@ -562,8 +566,6 @@ class Map {
 			int y = random.nextInt(mapSize);
 			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
 				if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2){
-					System.out.println(startX + " " + startY);
-					System.out.println(player.getX() + "-" + player.getY());
 					mapArray[x][y].setRoomContent("T");	
 				}
 			} else {
@@ -581,18 +583,30 @@ class Map {
 			int y = random.nextInt(mapSize);
 			if(mapArray[x][y].getRoomContent().equals("0")){ //if there is nothing in the room
 				int elvl = random.nextInt(4);
-				if(elvl == 0)
-					if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2)
+				if(elvl == 0){
+					if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2){
 						mapArray[x][y].setRoomContent("E");
-				if(elvl == 1)
-					if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2)
+						System.out.println((x-startX) + " : x-sx  -  " + (x-startX-2) + " : x-sx-2");
+						System.out.println((y-startY) + " : y-sy  -  " + (y-startY-2) + " : y-sy-2");
+						System.out.println(startX + " : sx  -  " + startY + " : sy ");
+						System.out.println();
+					}
+				}
+				if(elvl == 1){
+					if(Math.abs(x-startX) >= 2 || Math.abs(y-startY) >= 2){
 						mapArray[x][y].setRoomContent("EE");
-				if(elvl == 2)
-					if(Math.abs(x-startX) >= 3 || Math.abs(y-startY) >= 3)
+					}
+				}
+				if(elvl == 2){
+					if(Math.abs(x-startX) >= 3 || Math.abs(y-startY) >= 3){
 						mapArray[x][y].setRoomContent("EEE");
-				if(elvl == 3)
-					if(Math.abs(x-startX) >= 4 || Math.abs(y-startY) >= 4)
+					}
+				}
+				if(elvl == 3){
+					if(Math.abs(x-startX) >= 4 || Math.abs(y-startY) >= 4){
 						mapArray[x][y].setRoomContent("EEEE");
+					}
+				}
 			} else {
 				continue;
 			}
